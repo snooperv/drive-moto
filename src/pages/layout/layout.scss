@@ -1,0 +1,29 @@
+@import "../../assets/fonts/SFPro/fontSFPro";
+@import "../../assets/variables/variables";
+
+* {
+  font-family: "San Francisco Pro", sans-serif;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+#root {
+  font-size: $font-size + px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main_container {
+  margin: 0 auto;
+  max-width: 1171px;
+  flex: 1;
+}

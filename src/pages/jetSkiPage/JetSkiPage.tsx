@@ -1,6 +1,6 @@
 import React from "react";
 
-const HydroPage = () => {
+const JetSkiPage = () => {
   return (
     <div style={{ marginTop: 45 }}>
       Здесь должен быть контент страницы. Он пока отдыхает и думает каким ему
@@ -9,4 +9,4 @@ const HydroPage = () => {
   );
 };
 
-export default HydroPage;
+export default JetSkiPage;

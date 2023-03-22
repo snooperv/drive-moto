@@ -19,7 +19,7 @@ const FilterButtons = (props: { title: string }) => {
   };
 
   const buttonsStyles = {
-    justifyContent: "space-between",
+    gap: "10px",
     ".MuiButtonBase-root": {
       border: "none",
       borderRadius: "3px !important",
@@ -39,7 +39,6 @@ const FilterButtons = (props: { title: string }) => {
       color: "#FFFFFF",
     },
     "@media  (max-width: 1200px)": {
-      gap: "10px",
       flexWrap: "wrap",
     },
   };

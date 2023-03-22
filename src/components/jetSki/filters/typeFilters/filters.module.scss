@@ -46,9 +46,11 @@
   justify-content: space-between;
   font-size: math.div(14em, $font-size);
   color: #c4c4c4;
+  align-items: center;
 
   span {
     text-decoration-line: underline;
     color: #2f3035;
+    cursor: pointer;
   }
 }

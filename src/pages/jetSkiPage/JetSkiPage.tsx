@@ -13,7 +13,7 @@ const JetSkiPage = () => {
     {
       title: "Гидроцикл BRP SeaDoo GTI 130hp SE Black\\Mango",
       price: 1049500,
-      isSale: true,
+      isSale: false,
       isInInventory: true,
     },
     {

@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs } from "@mui/material";
-import React from "react";
+import React, { FormEvent } from "react";
 import styles from "./filters.module.scss";
 import { styled } from "@mui/material/styles";
 import NotFilter from "./typeFilters/NotFilter";
@@ -80,6 +80,10 @@ const Filters = () => {
     setValue(newValue);
   };
 
+  const applyFilters = (e: FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <div className={styles.container}>
       <Box sx={{ width: "100%" }}>
@@ -89,7 +93,7 @@ const Filters = () => {
         </AntTabs>
 
         <TabPanel value={value} index={0}>
-          <form className={styles.filters}>
+          <form className={styles.filters} onSubmit={applyFilters}>
             <FilterChecks
               title="Наличие"
               checks={[

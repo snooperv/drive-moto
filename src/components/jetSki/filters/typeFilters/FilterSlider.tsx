@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./filters.module.scss";
 import filterArrow from "../../../../assets/img/main/filterArrow.svg";
 import { Box, Slider } from "@mui/material";
+import parsePrice from "../../../../helpers/parsePrice";
 
 const FilterSlider = (props: {
   title: string;
@@ -31,6 +32,28 @@ const FilterSlider = (props: {
     },
   };
 
+  const changePrice = (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+    price: string
+  ) => {
+    let oldPrice = e.target as HTMLElement;
+    let inputPrice = document.createElement("input");
+    inputPrice.value = oldPrice.innerText.replace(/[^0-9.]/g, "");
+    inputPrice.style.width = "60px";
+    oldPrice.replaceWith(inputPrice);
+    inputPrice.focus();
+    inputPrice.oninput = () => {
+      inputPrice.value = inputPrice.value.replace(/[^0-9.]/g, "");
+    };
+    inputPrice.onblur = () => {
+      const newPrice = Number(inputPrice.value);
+      oldPrice.innerText = parsePrice(newPrice);
+      inputPrice.replaceWith(oldPrice);
+      if (price === "min") setValue([newPrice, value[1]]);
+      else if (price === "max") setValue([value[0], newPrice]);
+    };
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>
@@ -52,10 +75,16 @@ const FilterSlider = (props: {
 
       <div className={styles.prices}>
         <div className={styles.prices__min}>
-          от <span>{value[0]}</span>
+          от{" "}
+          <span onClick={(e) => changePrice(e, "min")}>
+            {parsePrice(value[0])}
+          </span>
         </div>
         <div className={styles.prices__max}>
-          до <span>{value[1]}</span>
+          до{" "}
+          <span onClick={(e) => changePrice(e, "max")}>
+            {parsePrice(value[1])}
+          </span>
         </div>
       </div>
     </div>

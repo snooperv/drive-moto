@@ -1,0 +1,126 @@
+@use "sass:math";
+@import "../../../assets/variables/variables";
+
+.card {
+  border: 1px solid #cdcdcd;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+
+  .sale {
+    font-size: math.div(12em, $font-size);
+    letter-spacing: 0.07em;
+    color: #ffffff;
+    padding: 7px 15px;
+    background: #1c62cd;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &__favorite {
+    margin-top: 15px;
+    margin-right: 20px;
+    cursor: pointer;
+    align-self: flex-end;
+
+    svg:hover {
+      path {
+        fill: #1c62cd;
+      }
+    }
+  }
+
+  &__image {
+    position: relative;
+
+    img {
+      max-width: 250px;
+      max-height: 190px;
+    }
+  }
+
+  .card__hover {
+    display: none;
+    padding: 18px 22px;
+    position: absolute;
+    white-space: nowrap;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+    background: #ffffff;
+    opacity: 0.9;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    color: #2f3035;
+    cursor: pointer;
+  }
+
+  &__title {
+    font-size: math.div(18em, $font-size);
+    color: #2f3035;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  &__footer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 74px;
+  }
+
+  &__price {
+    align-self: center;
+    font-weight: 700;
+    font-size: math.div(30em, $font-size);
+    color: #2f3035;
+  }
+
+  &__buy {
+    align-self: flex-end;
+    height: 40px;
+    cursor: pointer;
+
+    img {
+      background: #1c62cd;
+      border-radius: 10px 0 0 0;
+      padding: 8px 15px;
+    }
+  }
+
+  &__notAvailable {
+    align-self: center;
+    font-weight: 700;
+    font-size: math.div(18em, $font-size);
+    text-align: center;
+    color: #2f3035;
+  }
+
+  &__report {
+    margin-top: 15px;
+    align-self: center;
+    font-size: math.div(16em, $font-size);
+    text-decoration-line: underline;
+    text-underline-offset: 5px;
+    color: #1c62cd;
+    cursor: pointer;
+  }
+
+  &:hover {
+    box-shadow: 3px 3px 20px rgba(50, 50, 50, 0.25);
+
+    .card__price,
+    .card__title {
+      color: #1c62cd;
+    }
+
+    .card__hover {
+      display: block;
+    }
+  }
+}

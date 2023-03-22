@@ -1,0 +1,46 @@
+.slider {
+  width: 100%;
+  max-width: 870px;
+}
+
+.slide {
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
+}
+
+.indicatorContainer {
+  position: absolute;
+  bottom: 40px;
+  z-index: 10;
+}
+
+.indicatorIcon {
+  width: 14px;
+  height: 14px;
+  margin-right: 7px !important;
+
+  svg {
+    fill: #fff;
+    width: 14px;
+  }
+}
+
+.activeIndicatorIcon {
+  width: 12px;
+  height: 12px;
+  background-color: #fff !important;
+}
+
+.navButtons {
+  background: none !important;
+
+  svg {
+    height: 36px;
+    width: 36px;
+  }
+}

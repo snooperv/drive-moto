@@ -1,10 +1,25 @@
 import React from "react";
+import styles from "./jetSki.module.scss";
+import Promo from "../../components/jetSki/promo/Promo";
+import Banner from "../../components/jetSki/banner/Banner";
+import CustomBreadCrumbs from "../../components/jetSki/breadcrumbs/CustomBreadCrumbs";
+import SearchName from "../../components/jetSki/searchName/SearchName";
+import PageTitle from "../../components/jetSki/pageTitle/PageTitle";
+import Filters from "../../components/jetSki/filters/Filters";
 
 const JetSkiPage = () => {
   return (
-    <div style={{ marginTop: 45 }}>
-      Здесь должен быть контент страницы. Он пока отдыхает и думает каким ему
-      стать
+    <div className={styles.container}>
+      <CustomBreadCrumbs />
+      <div className={styles.advert}>
+        <Banner />
+        <Promo />
+      </div>
+      <SearchName />
+      <PageTitle />
+      <div className={styles.mainContent}>
+        <Filters />
+      </div>
     </div>
   );
 };

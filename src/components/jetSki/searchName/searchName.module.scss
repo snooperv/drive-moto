@@ -1,0 +1,39 @@
+.container {
+  margin-top: 100px;
+  color: #2f3035;
+}
+
+.search {
+  margin-top: 25px;
+  display: flex;
+
+  &__input {
+    width: 100%;
+    background: #f0f0f4;
+    border: none;
+    border-radius: 3px;
+    padding: 15px 20px;
+
+    &::-moz-placeholder {
+      color: #656464;
+      font-size: 16px;
+    }
+
+    &::-webkit-input-placeholder {
+      color: #656464;
+      font-size: 16px;
+    }
+  }
+
+  &__submit {
+    padding: 0 40px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: #1c62cd;
+    border: none;
+    border-radius: 3px;
+  }
+}

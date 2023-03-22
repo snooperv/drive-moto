@@ -1,0 +1,48 @@
+@use "sass:math";
+@import "../../../assets/variables/variables";
+
+.container {
+  margin-top: 75px;
+}
+
+.title {
+  font-weight: 700;
+  font-size: math.div(30em, $font-size);
+  color: #2f3035;
+  margin: 0;
+}
+
+.filters {
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__left {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    span {
+      padding: 4px 22px;
+      background: #f0f0f4;
+      border-radius: 3px;
+      font-size: math.div(14em, $font-size);
+      color: #2f3035;
+      opacity: 0.7;
+      cursor: pointer;
+    }
+  }
+
+  &__right {
+    display: flex;
+    gap: 35px;
+    align-items: center;
+
+    .mapping {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+  }
+}

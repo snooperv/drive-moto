@@ -1,0 +1,54 @@
+@use "sass:math";
+@import "../../../../assets/variables/variables";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: math.div(16em, $font-size);
+  color: #2f3035;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.search {
+  width: 100%;
+  padding: 8px 20px;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+
+  &::-moz-placeholder {
+    color: #bdbec2;
+    font-size: 12px;
+  }
+
+  &::-webkit-input-placeholder {
+    color: #bdbec2;
+    font-size: 12px;
+  }
+}
+
+.showMore {
+  font-size: math.div(14em, $font-size);
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+  color: #1c62cd;
+  cursor: pointer;
+}
+
+.prices {
+  display: flex;
+  justify-content: space-between;
+  font-size: math.div(14em, $font-size);
+  color: #c4c4c4;
+
+  span {
+    text-decoration-line: underline;
+    color: #2f3035;
+  }
+}

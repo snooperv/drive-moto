@@ -6,6 +6,11 @@
   width: 100%;
   background: #f0f0f4;
   padding: 40px 0 25px;
+
+  @media (max-width: 1210px) {
+    margin-left: -10px;
+    width: calc(100% + 20px);
+  }
 }
 
 .content {
@@ -15,6 +20,11 @@
   grid-template-columns: 4.5fr 2fr 2.5fr 2.5fr;
   row-gap: 45px;
   font-size: math.div(14em, $font-size);
+
+  @media (max-width: 1210px) {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 
   &__subscription {
     display: flex;
@@ -64,6 +74,10 @@
 .subscribeForm {
   display: flex;
   gap: 38px;
+
+  @media (max-width: 1000px) {
+    gap: 0;
+  }
 
   &__email {
     width: 100%;

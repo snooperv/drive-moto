@@ -1,0 +1,103 @@
+@use "sass:math";
+@import "../../../assets/variables/variables";
+
+.container {
+  width: 265px;
+  border: 1px solid #cdcdcd;
+  border-radius: 3px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.description {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 8px 20px;
+  background: #1c62cd;
+  font-size: math.div(12em, $font-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+
+  @media (max-width: 1160px) {
+    display: none;
+  }
+}
+
+.priceNew,
+.priceOld {
+  text-align: right;
+  margin-right: 7px;
+}
+
+.priceNew {
+  margin-top: 5px;
+  font-weight: 700;
+  font-size: math.div(27em, $font-size);
+  color: #1c62cd;
+}
+
+.priceOld {
+  margin-top: 7px;
+  font-size: math.div(14em, $font-size);
+  color: #c4c4c4;
+
+  span {
+    position: relative;
+
+    &:before {
+      content: "";
+      border-bottom: 0.5px solid #c4c4c4;
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      transform: rotate(-12deg);
+    }
+  }
+}
+
+.content,
+.footer {
+  text-align: center;
+}
+
+.content {
+  margin-top: 7px;
+  font-weight: 700;
+  font-size: math.div(18em, $font-size);
+  color: #2f3035;
+  padding: 0 25px;
+
+  span {
+    margin-top: 5px;
+  }
+
+  @media (max-width: 1160px) {
+    padding: 0;
+  }
+}
+
+.footer {
+  margin-top: auto;
+  font-size: math.div(18em, $font-size);
+  padding: 25px 20px;
+  background: #f0f0f4;
+
+  &__text {
+    display: block;
+    color: #2f3035;
+  }
+
+  &__date {
+    display: block;
+    font-weight: 700;
+    color: #1c62cd;
+  }
+
+  @media (max-width: 1160px) {
+    padding: 25px 0;
+  }
+}

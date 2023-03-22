@@ -6,6 +6,7 @@
   font-size: math.div(20em, $font-size);
   font-weight: 700;
   max-width: 1171px;
+  width: 100%;
 }
 
 .top {
@@ -16,6 +17,10 @@
   &__left {
     display: flex;
     gap: 50px;
+
+    @media (max-width: 1000px) {
+      gap: 25px;
+    }
   }
 
   &__logo {
@@ -24,6 +29,10 @@
   &__right {
     display: flex;
     gap: 100px;
+
+    @media (max-width: 1000px) {
+      gap: 50px;
+    }
   }
 }
 

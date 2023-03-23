@@ -2,19 +2,50 @@ import React from "react";
 import styles from "./filters.module.scss";
 import filterArrow from "../../../../assets/img/main/filterArrow.svg";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 const FilterChecks = (props: {
   title: string;
-  checks: { text: string; name: string; value?: string }[];
+  checks: { text: string; name: string; value: string }[];
   isInput?: boolean;
   isMore?: boolean;
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const checkboxStyle = {
     ".MuiTypography-root": { fontFamily: "inherit", fontSize: "14px" },
     ".MuiFormControlLabel-root": { marginRight: 0 },
 
     display: "grid",
     rowGap: "5px",
+  };
+
+  const isChecked = (name: string, value: string) => {
+    let flag = false;
+    for (const entry of searchParams.entries()) {
+      const [param, valueQuery] = entry;
+      if (param === name && valueQuery === value) flag = true;
+    }
+    return flag;
+  };
+
+  const filter = (
+    name: string,
+    value: string,
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const target = event.target as HTMLInputElement;
+    let query = [...searchParams];
+    if (target.checked) query.push([name, value]);
+    else {
+      const newQuery = [];
+      for (const entry of searchParams.entries()) {
+        if (JSON.stringify(entry) !== JSON.stringify([name, value]))
+          newQuery.push(entry);
+      }
+      query = newQuery;
+    }
+    setSearchParams(query);
   };
 
   return (
@@ -48,6 +79,10 @@ const FilterChecks = (props: {
                   name={checkbox.name}
                   value={checkbox.value}
                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                  checked={isChecked(checkbox.name, checkbox.value)}
+                  onClick={(event) =>
+                    filter(checkbox.name, checkbox.value, event)
+                  }
                 />
               }
               label={checkbox.text}

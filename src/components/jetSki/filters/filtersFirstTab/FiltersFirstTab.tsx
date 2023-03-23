@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import styles from "../filters.module.scss";
 import FilterChecks from "../typeFilters/FilterChecks";
 import FilterSlider from "../typeFilters/FilterSlider";
@@ -9,6 +9,7 @@ import { PageSize } from "../../../../constants/pageSetting";
 
 const FiltersFirstTab = (filters: filtersProps) => {
   const [, setSearchParams] = useSearchParams();
+  const [isReset, setIsReset] = useState(false);
   let countries = [],
     brands = [],
     models = [];
@@ -43,7 +44,12 @@ const FiltersFirstTab = (filters: filtersProps) => {
 
   const clearFilters = () => {
     setSearchParams(`PageNumber=1&PageSize=${PageSize}`);
+    setIsReset(true);
   };
+
+  useEffect(() => {
+    setIsReset(false);
+  }, [isReset]);
 
   return (
     <form className={styles.filters} onSubmit={applyFilters}>
@@ -60,6 +66,7 @@ const FiltersFirstTab = (filters: filtersProps) => {
           minPrice: filters.minPrice || 1,
           maxPrice: filters.maxPrice || 1000000,
         }}
+        isReset={isReset}
       />
       <FilterChecks title="Бренд" checks={brands} isMore />
       <FilterChecks title="Модель" checks={models} isInput isMore />

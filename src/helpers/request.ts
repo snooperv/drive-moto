@@ -16,9 +16,7 @@ const request = async (url: string, method?: string | "GET", data?: object) => {
       });
     }
 
-    const responseData = await response.data;
-    console.log(responseData);
-    return responseData;
+    return await response.data;
   } catch (e: any) {
     console.log(e);
   }

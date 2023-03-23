@@ -1,16 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./filters.module.scss";
 import filterArrow from "../../../../assets/img/main/filterArrow.svg";
 import { Box, Slider } from "@mui/material";
 import parsePrice from "../../../../helpers/parsePrice";
+import { useSearchParams } from "react-router-dom";
 
 const FilterSlider = (props: {
   title: string;
   price: { minPrice: number; maxPrice: number };
+  isReset: boolean;
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = React.useState<number[]>([
-    props.price.minPrice,
+    Number(searchParams.get("MinPrice")) || props.price.minPrice,
+    Number(searchParams.get("MaxPrice")) || props.price.maxPrice,
+  ]);
+
+  useEffect(() => {
+    if (props.isReset) {
+      setValue([props.price.minPrice, props.price.maxPrice]);
+    }
+    const timer = setTimeout(() => {
+      let query = [...searchParams];
+      if (
+        String(query).includes("MinPrice") ||
+        String(query).includes("MaxPrice")
+      ) {
+        const newQuery = [];
+        for (const entry of searchParams.entries()) {
+          const [param] = entry;
+          if (param !== "MinPrice" && param !== "MaxPrice")
+            newQuery.push(entry);
+        }
+        query = newQuery;
+      }
+      value[0] !== props.price.minPrice &&
+        query.push(["MinPrice", String(value[0])]);
+      value[1] !== props.price.maxPrice &&
+        query.push(["MaxPrice", String(value[1])]);
+      setSearchParams(query);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [
+    props.isReset,
     props.price.maxPrice,
+    props.price.minPrice,
+    searchParams,
+    setSearchParams,
+    value,
   ]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
@@ -44,6 +81,9 @@ const FilterSlider = (props: {
     inputPrice.focus();
     inputPrice.oninput = () => {
       inputPrice.value = inputPrice.value.replace(/[^0-9.]/g, "");
+    };
+    inputPrice.onkeyup = (e) => {
+      if (e.code === "Enter") inputPrice.blur();
     };
     inputPrice.onblur = () => {
       const newPrice = Number(inputPrice.value);

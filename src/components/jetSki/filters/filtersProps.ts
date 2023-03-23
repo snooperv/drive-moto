@@ -1,5 +1,3 @@
-import { cardProps } from "../../../pages/jetSkiPage/cardProps";
-
 export interface filtersProps {
   minPrice?: number;
   maxPrice?: number;
@@ -15,5 +13,4 @@ export interface filtersProps {
       }[];
     }[];
   }[];
-  setContent: (res: cardProps[]) => void;
 }

@@ -4,9 +4,11 @@ import FilterChecks from "../typeFilters/FilterChecks";
 import FilterSlider from "../typeFilters/FilterSlider";
 import FilterButtons from "../typeFilters/FilterButtons";
 import { filtersProps } from "../filtersProps";
-import { getProducts } from "../../../../services/data";
+import { useSearchParams } from "react-router-dom";
+import { PageSize } from "../../../../constants/pageSetting";
 
 const FiltersFirstTab = (filters: filtersProps) => {
+  const [, setSearchParams] = useSearchParams();
   let countries = [],
     brands = [],
     models = [];
@@ -33,10 +35,10 @@ const FiltersFirstTab = (filters: filtersProps) => {
     const checked = Array.from(
       form.querySelectorAll('input[type="checkbox"]:checked')
     ) as HTMLInputElement[];
-    getProducts(checked).then((res) => {
-      console.log(res);
-      filters.setContent(res.products);
-    });
+    const filters = `PageNumber=1&PageSize=${PageSize}&${checked
+      .map((type) => `${type.name}=${type.value}`)
+      .join("&")}`;
+    setSearchParams(filters);
   };
 
   return (

@@ -9,32 +9,35 @@ import Filters from "../../components/jetSki/filters/Filters";
 import Product from "../../components/jetSki/product/Product";
 import { getProducts } from "../../services/data";
 import { Pagination, Stack } from "@mui/material";
-import { useNavigate, useParams } from "react-router";
 import { cardProps } from "./cardProps";
+import { useSearchParams } from "react-router-dom";
+import { PageSize } from "../../constants/pageSetting";
 
 const JetSkiPage = () => {
-  const { page } = useParams();
-  const navigate = useNavigate();
-  const PageSize = 9;
-  const currentPage = Number(page) || 1;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const PageNumber = Number(searchParams.get("PageNumber")) || 1;
   const [cards, setCards] = useState<cardProps[]>([]);
-  const [PageNumber, setPageNumber] = useState<number>(currentPage);
   const [pageCount, setPageCount] = useState<number>(1);
 
   useEffect(() => {
-    getProducts({ PageNumber, PageSize }).then((res) => {
+    if (String(searchParams).length === 0)
+      setSearchParams({
+        PageNumber: String(PageNumber),
+        PageSize: String(PageSize),
+      });
+  }, [PageNumber, searchParams, setSearchParams]);
+
+  useEffect(() => {
+    getProducts(searchParams).then((res) => {
       setPageCount(res.pageCount);
       setCards(res.products);
     });
-  }, [PageNumber]);
-
-  useEffect(() => {
-    setPageNumber(currentPage);
-  }, [currentPage]);
+  }, [searchParams]);
 
   const changePage = (e: React.ChangeEvent<unknown>, page: number) => {
-    setPageNumber(page);
-    navigate(`/jet-skis/${page}`);
+    let query = [...searchParams];
+    query[0][1] = String(page);
+    setSearchParams(query);
   };
 
   return (
@@ -47,7 +50,7 @@ const JetSkiPage = () => {
       <SearchName />
       <PageTitle />
       <div className={styles.mainContent}>
-        <Filters setContent={setCards} />
+        <Filters />
         <div className={styles.cardsContent}>
           <div className={styles.cards}>
             {cards.map((card, index) => (

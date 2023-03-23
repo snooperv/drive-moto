@@ -6,7 +6,6 @@ import NotFilter from "./typeFilters/NotFilter";
 import { getFilters } from "../../../services/data";
 import { filtersProps } from "./filtersProps";
 import FiltersFirstTab from "./filtersFirstTab/FiltersFirstTab";
-import { cardProps } from "../../../pages/jetSkiPage/cardProps";
 
 const AntTabs = styled(Tabs)({
   minHeight: "auto",
@@ -74,11 +73,9 @@ function a11yProps(index: number) {
   };
 }
 
-const Filters = (props: { setContent: (res: cardProps[]) => void }) => {
+const Filters = () => {
   const [value, setValue] = useState(0);
-  const [filters, setFilters] = useState<filtersProps>({
-    setContent: props.setContent,
-  });
+  const [filters, setFilters] = useState<filtersProps>({});
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -86,10 +83,9 @@ const Filters = (props: { setContent: (res: cardProps[]) => void }) => {
 
   useEffect(() => {
     getFilters().then((res) => {
-      res.setContent = filters.setContent;
       setFilters(res);
     });
-  }, [filters.setContent]);
+  }, []);
 
   return (
     <div className={styles.container}>

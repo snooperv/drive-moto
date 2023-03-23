@@ -6,15 +6,14 @@ import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 const FilterChecks = (props: {
   title: string;
   checks: { text: string; name: string }[];
-  isInput?: boolean | false;
-  isMore?: boolean | false;
+  isInput?: boolean;
+  isMore?: boolean;
 }) => {
   const checkboxStyle = {
     ".MuiTypography-root": { fontFamily: "inherit", fontSize: "14px" },
     ".MuiFormControlLabel-root": { marginRight: 0 },
 
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
     rowGap: "5px",
   };
 
@@ -32,7 +31,14 @@ const FilterChecks = (props: {
           className={styles.search}
         />
       )}
-      <FormGroup sx={checkboxStyle}>
+      <FormGroup
+        sx={checkboxStyle}
+        style={
+          props.isInput
+            ? { gridTemplateColumns: "1fr" }
+            : { gridTemplateColumns: "1fr 1fr" }
+        }
+      >
         {props.checks.map((checkbox, index) => {
           return (
             <FormControlLabel
@@ -52,5 +58,7 @@ const FilterChecks = (props: {
     </div>
   );
 };
+
+FilterChecks.defaultProps = { isInput: false, isMore: false };
 
 export default FilterChecks;

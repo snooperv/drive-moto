@@ -60,17 +60,23 @@ const JetSkiPage = () => {
               />
             ))}
           </div>
-          <Stack sx={{ alignItems: "center", margin: "40px 0" }}>
-            <Pagination
-              count={pageCount}
-              shape="rounded"
-              onChange={changePage}
-              page={PageNumber}
-              hidePrevButton={true}
-              hideNextButton={true}
-              sx={paginationStyles}
-            />
-          </Stack>
+          {cards.length !== 0 ? (
+            <Stack sx={{ alignItems: "center", margin: "40px 0" }}>
+              <Pagination
+                count={pageCount}
+                shape="rounded"
+                onChange={changePage}
+                page={PageNumber}
+                hidePrevButton={true}
+                hideNextButton={true}
+                sx={paginationStyles}
+              />
+            </Stack>
+          ) : (
+            <div className={styles.cards__empty}>
+              К сожалению, список товаров пуст
+            </div>
+          )}
         </div>
       </div>
     </div>

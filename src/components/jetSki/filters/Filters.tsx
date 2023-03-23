@@ -1,11 +1,11 @@
 import { Box, Tab, Tabs } from "@mui/material";
-import React, { FormEvent } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./filters.module.scss";
 import { styled } from "@mui/material/styles";
 import NotFilter from "./typeFilters/NotFilter";
-import FilterChecks from "./typeFilters/FilterChecks";
-import FilterSlider from "./typeFilters/FilterSlider";
-import FilterButtons from "./typeFilters/FilterButtons";
+import { getFilters } from "../../../services/data";
+import filtersProps from "./filtersProps";
+import FiltersFirstTab from "./filtersFirstTab/FiltersFirstTab";
 
 const AntTabs = styled(Tabs)({
   minHeight: "auto",
@@ -74,15 +74,16 @@ function a11yProps(index: number) {
 }
 
 const Filters = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [filters, setFilters] = useState<filtersProps>({});
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const applyFilters = (e: FormEvent) => {
-    e.preventDefault();
-  };
+  useEffect(() => {
+    getFilters().then((res) => setFilters(res));
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -93,56 +94,18 @@ const Filters = () => {
         </AntTabs>
 
         <TabPanel value={value} index={0}>
-          <form className={styles.filters} onSubmit={applyFilters}>
-            <FilterChecks
-              title="Наличие"
-              checks={[
-                { text: "В наличие", name: "inStock" },
-                { text: "Под заказ", name: "inOrder" },
-              ]}
-            />
-            <FilterSlider
-              title="Цена"
-              price={{ minPrice: 100000, maxPrice: 500000 }}
-            />
-            <FilterChecks
-              title="Бренд"
-              checks={[
-                { text: "BRP", name: "brp" },
-                { text: "Spark 2", name: "spark2" },
-                { text: "Spark 3", name: "spark3" },
-              ]}
-              isMore
-            />
-            <FilterChecks
-              title="Модель"
-              checks={[
-                { text: "Sea-doo Spark 2", name: "seaDooSpark2" },
-                { text: "SeaDoo Spark 90", name: "seaDooSpark90" },
-                { text: "SeaDoo GTI 155", name: "seaDooGTI155" },
-                { text: "SeaDoo GTR 230", name: "seaDooGTI230" },
-              ]}
-              isInput
-              isMore
-            />
-            <FilterButtons title="Акции" />
-            <FilterChecks
-              title="Страны"
-              checks={[
-                { text: "Россия", name: "russia" },
-                { text: "Германия", name: "germany" },
-                { text: "Китай", name: "china" },
-                { text: "CША", name: "usa" },
-              ]}
-              isMore
-            />
-            <button type="submit" className={styles.apply}>
-              Выбрать
-            </button>
-          </form>
+          {Object.keys(filters).length !== 0 ? (
+            <FiltersFirstTab {...filters} />
+          ) : (
+            <div className={styles.filters__empty}>
+              К сожалению, список фильтров пуст
+            </div>
+          )}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <NotFilter />
+          <div className={styles.filters__empty}>
+            <NotFilter />
+          </div>
         </TabPanel>
       </Box>
     </div>

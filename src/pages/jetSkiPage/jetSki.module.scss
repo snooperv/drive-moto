@@ -23,6 +23,12 @@
   grid-auto-rows: 400px;
   gap: 30px;
   height: calc(100% - 112px);
+
+  &__empty {
+    font-size: 24px;
+    text-align: center;
+    margin: 40px 0;
+  }
 }
 
 .MuiPagination-ul {

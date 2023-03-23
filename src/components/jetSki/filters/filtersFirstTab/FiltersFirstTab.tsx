@@ -3,7 +3,8 @@ import styles from "../filters.module.scss";
 import FilterChecks from "../typeFilters/FilterChecks";
 import FilterSlider from "../typeFilters/FilterSlider";
 import FilterButtons from "../typeFilters/FilterButtons";
-import filtersProps from "../filtersProps";
+import { filtersProps } from "../filtersProps";
+import { getProducts } from "../../../../services/data";
 
 const FiltersFirstTab = (filters: filtersProps) => {
   let countries = [],
@@ -12,11 +13,15 @@ const FiltersFirstTab = (filters: filtersProps) => {
 
   if (filters.countries) {
     for (let country of filters.countries) {
-      countries.push({ text: country.title, name: country.id });
+      countries.push({
+        text: country.title,
+        name: "Countries",
+        value: country.id,
+      });
       for (let brand of country.brands) {
-        brands.push({ text: brand.title, name: brand.id });
+        brands.push({ text: brand.title, name: "Brands", value: brand.id });
         for (let model of brand.models) {
-          models.push({ text: model.title, name: model.id });
+          models.push({ text: model.title, name: "Models", value: model.id });
         }
       }
     }
@@ -24,6 +29,14 @@ const FiltersFirstTab = (filters: filtersProps) => {
 
   const applyFilters = (e: FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const checked = Array.from(
+      form.querySelectorAll('input[type="checkbox"]:checked')
+    ) as HTMLInputElement[];
+    getProducts(checked).then((res) => {
+      console.log(res);
+      filters.setContent(res.products);
+    });
   };
 
   return (
@@ -31,8 +44,8 @@ const FiltersFirstTab = (filters: filtersProps) => {
       <FilterChecks
         title="Наличие"
         checks={[
-          { text: "В наличие", name: "IsInInventory" },
-          { text: "Под заказ", name: "IsOnRequest" },
+          { text: "В наличие", name: "IsInInventory", value: "true" },
+          { text: "Под заказ", name: "IsOnRequest", value: "true" },
         ]}
       />
       <FilterSlider

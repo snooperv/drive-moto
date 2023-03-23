@@ -10,6 +10,7 @@ import Product from "../../components/jetSki/product/Product";
 import { getProducts } from "../../services/data";
 import { Pagination, Stack } from "@mui/material";
 import { useNavigate, useParams } from "react-router";
+import { cardProps } from "./cardProps";
 
 const JetSkiPage = () => {
   const { page } = useParams();
@@ -46,7 +47,7 @@ const JetSkiPage = () => {
       <SearchName />
       <PageTitle />
       <div className={styles.mainContent}>
-        <Filters />
+        <Filters setContent={setCards} />
         <div className={styles.cardsContent}>
           <div className={styles.cards}>
             {cards.map((card, index) => (
@@ -103,19 +104,5 @@ const paginationStyles = {
     },
   },
 };
-
-interface cardProps {
-  title: string;
-  price: number;
-  actions: number[];
-  isInInventory: boolean;
-  brandId: string;
-  countryId: string;
-  id: string;
-  img: string;
-  isFavourite: boolean;
-  isOnRequest: boolean;
-  modelId: string;
-}
 
 export default JetSkiPage;

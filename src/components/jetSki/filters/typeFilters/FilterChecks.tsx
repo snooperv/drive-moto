@@ -5,7 +5,7 @@ import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
 const FilterChecks = (props: {
   title: string;
-  checks: { text: string; name: string }[];
+  checks: { text: string; name: string; value?: string }[];
   isInput?: boolean;
   isMore?: boolean;
 }) => {
@@ -46,6 +46,7 @@ const FilterChecks = (props: {
               control={
                 <Checkbox
                   name={checkbox.name}
+                  value={checkbox.value}
                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                 />
               }

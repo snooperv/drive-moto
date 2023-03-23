@@ -24,3 +24,22 @@
   gap: 30px;
   height: calc(100% - 112px);
 }
+
+.MuiPagination-ul {
+  gap: 10px;
+}
+
+.MuiButtonBase-root {
+  font-family: inherit;
+  font-size: 18px;
+  padding: 20px 15px;
+  background-color: #fff;
+
+  &.Mui-selected {
+    border: 2px solid #1c62cd;
+
+    &:hover {
+      background-color: #fff;
+    }
+  }
+}

@@ -9,17 +9,26 @@ import Filters from "../../components/jetSki/filters/Filters";
 import Product from "../../components/jetSki/product/Product";
 import { getProducts } from "../../services/data";
 import { Pagination, Stack } from "@mui/material";
+import { useNavigate, useParams } from "react-router";
 
 const JetSkiPage = () => {
+  const { page } = useParams();
+  const navigate = useNavigate();
   const PageSize = 9;
+  const currentPage = Number(page) || 1;
   const [cards, setCards] = useState<cardProps[]>([]);
-  const [PageNumber, setPageNumber] = useState<number>(1);
+  const [PageNumber, setPageNumber] = useState<number>(currentPage);
 
   useEffect(() => {
     getProducts({ PageNumber, PageSize }).then((res) => {
       setCards(res);
     });
   }, [PageNumber]);
+
+  const changePage = (e: React.ChangeEvent<unknown>, page: number) => {
+    setPageNumber(page);
+    navigate(`/jet-skis/${page}`);
+  };
 
   return (
     <div className={styles.container}>
@@ -45,17 +54,42 @@ const JetSkiPage = () => {
               />
             ))}
           </div>
-          <Stack spacing={2} sx={{ alignItems: "center", margin: "40px 0" }}>
+          <Stack sx={{ alignItems: "center", margin: "40px 0" }}>
             <Pagination
               count={2}
               shape="rounded"
-              onChange={(e, page: number) => setPageNumber(page)}
+              onChange={changePage}
+              page={currentPage}
+              hidePrevButton={true}
+              hideNextButton={true}
+              sx={paginationStyles}
             />
           </Stack>
         </div>
       </div>
     </div>
   );
+};
+
+const paginationStyles = {
+  ".MuiPagination-ul": {
+    gap: "10px",
+  },
+  ".MuiButtonBase-root": {
+    fontFamily: "inherit",
+    fontSize: "18px",
+    padding: "20px 15px",
+    backgroundColor: "#fff",
+
+    "&.Mui-selected": {
+      border: "2px solid #1C62CD",
+      backgroundColor: "#fff",
+
+      "&:hover": {
+        backgroundColor: "#fff",
+      },
+    },
+  },
 };
 
 interface cardProps {

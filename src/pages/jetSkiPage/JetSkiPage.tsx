@@ -53,18 +53,24 @@ const JetSkiPage = () => {
         <Filters />
         <div className={styles.cardsContent}>
           <div className={styles.cards}>
-            {cards.map((card, index) => (
-              <Product
-                title={card.title}
-                price={card.price}
-                img={card.img}
-                isSale={card.actions.includes(0)}
-                isInInventory={card.isInInventory}
-                key={index}
-              />
-            ))}
+            {cards.length > 0 ? (
+              cards.map((card, index) => (
+                <Product
+                  title={card.title}
+                  price={card.price}
+                  img={card.img}
+                  isSale={card.actions.includes(0)}
+                  isInInventory={card.isInInventory}
+                  key={index}
+                />
+              ))
+            ) : (
+              <div className={styles.cards__empty}>
+                К сожалению, список товаров пуст
+              </div>
+            )}
           </div>
-          {cards.length !== 0 ? (
+          {cards.length !== 0 && (
             <Stack sx={{ alignItems: "center", margin: "40px 0" }}>
               <Pagination
                 count={pageCount}
@@ -76,10 +82,6 @@ const JetSkiPage = () => {
                 sx={paginationStyles}
               />
             </Stack>
-          ) : (
-            <div className={styles.cards__empty}>
-              К сожалению, список товаров пуст
-            </div>
           )}
         </div>
       </div>

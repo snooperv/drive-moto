@@ -29,7 +29,21 @@
   align-self: center;
   cursor: pointer;
 
+  &:hover {
+    background: #2f3035;
+    color: #ffffff;
+  }
+
   @media (max-width: 1200px) {
     padding: 15px 40px;
   }
+}
+
+.clear {
+  align-self: center;
+  margin-top: -25px;
+  font-size: 13px;
+  text-decoration-line: underline;
+  color: #c4c4c4;
+  cursor: pointer;
 }

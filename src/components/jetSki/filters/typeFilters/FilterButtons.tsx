@@ -2,14 +2,38 @@ import React from "react";
 import styles from "./filters.module.scss";
 import filterArrow from "../../../../assets/img/main/filterArrow.svg";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 const FilterButtons = (props: { title: string }) => {
-  const [alignment, setAlignment] = React.useState([""]);
+  const isChecked = () => {
+    let listChecked = [];
+    for (const entry of searchParams.entries()) {
+      const [param, valueQuery] = entry;
+      if (param === "Actions") listChecked.push(valueQuery);
+    }
+    return listChecked;
+  };
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [alignment, setAlignment] = React.useState(isChecked);
 
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string
   ) => {
+    const button = event.target as HTMLButtonElement;
+    let query = [...searchParams];
+    if (button.ariaPressed === "false") query.push(["Actions", button.value]);
+    else {
+      const newQuery = [];
+      for (const entry of searchParams.entries()) {
+        if (JSON.stringify(entry) !== JSON.stringify(["Actions", button.value]))
+          newQuery.push(entry);
+      }
+      query = newQuery;
+    }
+    setSearchParams(query);
+
     let copy = Object.assign([], alignment);
     if (copy.includes(newAlignment)) {
       const index = copy.indexOf(newAlignment);

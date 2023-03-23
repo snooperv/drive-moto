@@ -41,6 +41,10 @@ const FiltersFirstTab = (filters: filtersProps) => {
     setSearchParams(filters);
   };
 
+  const clearFilters = () => {
+    setSearchParams(`PageNumber=1&PageSize=${PageSize}`);
+  };
+
   return (
     <form className={styles.filters} onSubmit={applyFilters}>
       <FilterChecks
@@ -64,6 +68,9 @@ const FiltersFirstTab = (filters: filtersProps) => {
       <button type="submit" className={styles.apply}>
         Выбрать
       </button>
+      <span className={styles.clear} onClick={clearFilters}>
+        Сбросить фильтр
+      </span>
     </form>
   );
 };

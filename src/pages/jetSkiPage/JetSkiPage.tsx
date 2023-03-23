@@ -18,12 +18,18 @@ const JetSkiPage = () => {
   const currentPage = Number(page) || 1;
   const [cards, setCards] = useState<cardProps[]>([]);
   const [PageNumber, setPageNumber] = useState<number>(currentPage);
+  const [pageCount, setPageCount] = useState<number>(1);
 
   useEffect(() => {
     getProducts({ PageNumber, PageSize }).then((res) => {
-      setCards(res);
+      setPageCount(res.pageCount);
+      setCards(res.products);
     });
   }, [PageNumber]);
+
+  useEffect(() => {
+    setPageNumber(currentPage);
+  }, [currentPage]);
 
   const changePage = (e: React.ChangeEvent<unknown>, page: number) => {
     setPageNumber(page);
@@ -56,10 +62,10 @@ const JetSkiPage = () => {
           </div>
           <Stack sx={{ alignItems: "center", margin: "40px 0" }}>
             <Pagination
-              count={2}
+              count={pageCount}
               shape="rounded"
               onChange={changePage}
-              page={currentPage}
+              page={PageNumber}
               hidePrevButton={true}
               hideNextButton={true}
               sx={paginationStyles}

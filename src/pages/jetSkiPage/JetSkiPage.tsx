@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./jetSki.module.scss";
 import Promo from "../../components/jetSki/promo/Promo";
 import Banner from "../../components/jetSki/banner/Banner";
@@ -7,40 +7,19 @@ import SearchName from "../../components/jetSki/searchName/SearchName";
 import PageTitle from "../../components/jetSki/pageTitle/PageTitle";
 import Filters from "../../components/jetSki/filters/Filters";
 import Product from "../../components/jetSki/product/Product";
+import { getProducts } from "../../services/data";
+import { Pagination, Stack } from "@mui/material";
 
 const JetSkiPage = () => {
-  const cards = [
-    {
-      title: "Гидроцикл BRP SeaDoo GTI 130hp SE Black\\Mango",
-      price: 1049500,
-      isSale: false,
-      isInInventory: true,
-    },
-    {
-      title: "Гидроцикл BRP SeaDoo GTI 130hp SE Black\\Mango",
-      price: 1049500,
-      isSale: false,
-      isInInventory: false,
-    },
-    {
-      title: "Гидроцикл BRP SeaDoo GTI 130hp SE Black\\Mango",
-      price: 1049500,
-      isSale: true,
-      isInInventory: true,
-    },
-    {
-      title: "Гидроцикл BRP SeaDoo GTI 130hp SE Black\\Mango",
-      price: 1049500,
-      isSale: false,
-      isInInventory: true,
-    },
-    {
-      title: "Гидроцикл BRP SeaDoo GTI 130hp SE Black\\Mango",
-      price: 1049500,
-      isSale: true,
-      isInInventory: true,
-    },
-  ];
+  const PageSize = 9;
+  const [cards, setCards] = useState<cardProps[]>([]);
+  const [PageNumber, setPageNumber] = useState<number>(1);
+
+  useEffect(() => {
+    getProducts({ PageNumber, PageSize }).then((res) => {
+      setCards(res);
+    });
+  }, [PageNumber]);
 
   return (
     <div className={styles.container}>
@@ -53,20 +32,44 @@ const JetSkiPage = () => {
       <PageTitle />
       <div className={styles.mainContent}>
         <Filters />
-        <div className={styles.cards}>
-          {cards.map((card, index) => (
-            <Product
-              title={card.title}
-              price={card.price}
-              isSale={card.isSale}
-              isInInventory={card.isInInventory}
-              key={index}
+        <div className={styles.cardsContent}>
+          <div className={styles.cards}>
+            {cards.map((card, index) => (
+              <Product
+                title={card.title}
+                price={card.price}
+                img={card.img}
+                isSale={card.actions.includes(0)}
+                isInInventory={card.isInInventory}
+                key={index}
+              />
+            ))}
+          </div>
+          <Stack spacing={2} sx={{ alignItems: "center", margin: "40px 0" }}>
+            <Pagination
+              count={2}
+              shape="rounded"
+              onChange={(e, page: number) => setPageNumber(page)}
             />
-          ))}
+          </Stack>
         </div>
       </div>
     </div>
   );
 };
+
+interface cardProps {
+  title: string;
+  price: number;
+  actions: number[];
+  isInInventory: boolean;
+  brandId: string;
+  countryId: string;
+  id: string;
+  img: string;
+  isFavourite: boolean;
+  isOnRequest: boolean;
+  modelId: string;
+}
 
 export default JetSkiPage;

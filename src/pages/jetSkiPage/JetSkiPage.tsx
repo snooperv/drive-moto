@@ -18,7 +18,7 @@ const JetSkiPage = () => {
   const PageNumber = Number(searchParams.get("PageNumber")) || 1;
   const [cards, setCards] = useState<cardProps[]>([]);
   const [pageCount, setPageCount] = useState<number>(1);
-  const h2ref = useRef() as MutableRefObject<HTMLDivElement>;
+  const mainRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
     if (String(searchParams).length === 0)
@@ -36,7 +36,7 @@ const JetSkiPage = () => {
   }, [searchParams]);
 
   const changePage = (e: React.ChangeEvent<unknown>, page: number) => {
-    h2ref.current.scrollIntoView();
+    mainRef.current.scrollIntoView();
     let query = [...searchParams];
     query[0][1] = String(page);
     setSearchParams(query);
@@ -51,7 +51,7 @@ const JetSkiPage = () => {
       </div>
       <SearchName />
       <PageTitle />
-      <div className={styles.mainContent} ref={h2ref}>
+      <div className={styles.mainContent} ref={mainRef}>
         <Filters />
         <div className={styles.cardsContent}>
           <div className={styles.cards}>

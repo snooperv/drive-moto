@@ -11,6 +11,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 const StyledSelect = styled(Select)(() => ({
   ".MuiSelect-select": {
@@ -24,10 +25,30 @@ const StyledSelect = styled(Select)(() => ({
 }));
 
 const PageTitle = () => {
-  const [sort, setSort] = React.useState("1");
+  const isChecked = () => {
+    let checked = "0";
+    for (const entry of searchParams.entries()) {
+      const [param, valueQuery] = entry;
+      if (param === "Mode") checked = valueQuery;
+    }
+    return checked;
+  };
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
-    setSort(event.target.value as string);
+    const value = event.target.value as string;
+    let query = [...searchParams];
+    if (String(query).includes("Mode")) {
+      const newQuery = [];
+      for (const entry of searchParams.entries()) {
+        const [param] = entry;
+        if (param !== "Mode") newQuery.push(entry);
+      }
+      query = newQuery;
+    }
+    query.push(["Mode", value]);
+    setSearchParams(query);
   };
 
   return (
@@ -44,15 +65,15 @@ const PageTitle = () => {
           <Box sx={{ width: 178 }}>
             <FormControl fullWidth>
               <StyledSelect
-                value={sort}
+                value={isChecked()}
                 label="sort"
                 onChange={handleChange}
                 input={<OutlinedInput />}
                 className="sorting-select"
               >
-                <MenuItem value={1}>По популярности</MenuItem>
-                <MenuItem value={2}>По рейтингу</MenuItem>
-                <MenuItem value={3}>По цене</MenuItem>
+                <MenuItem value={0}>По популярности</MenuItem>
+                <MenuItem value={1}>По цене &#8595;</MenuItem>
+                <MenuItem value={2}>По цене &#8593;</MenuItem>
               </StyledSelect>
             </FormControl>
           </Box>

@@ -13,6 +13,7 @@ const FilterChecks = (props: {
   checks: { text: string; name: string; value: string }[];
   isInput?: boolean;
   isMore?: boolean;
+  disabledList?: string[];
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -75,6 +76,9 @@ const FilterChecks = (props: {
                   onClick={(event) =>
                     filter(checkbox.name, checkbox.value, event)
                   }
+                  disabled={
+                    props.disabledList?.includes(checkbox.value) || false
+                  }
                 />
               }
               label={checkbox.text}
@@ -95,6 +99,6 @@ const checkboxStyle = {
   rowGap: "5px",
 };
 
-FilterChecks.defaultProps = { isInput: false, isMore: false };
+FilterChecks.defaultProps = {isInput: false, isMore: false};
 
 export default FilterChecks;

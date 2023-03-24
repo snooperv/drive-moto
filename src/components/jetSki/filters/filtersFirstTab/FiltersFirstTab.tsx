@@ -6,6 +6,11 @@ import FilterButtons from "../typeFilters/FilterButtons";
 import { filtersProps } from "../filtersProps";
 import { useSearchParams } from "react-router-dom";
 import { PageSize } from "../../../../constants/pageSetting";
+import {
+  BrandsProp,
+  CountriesProp,
+  ModelsProp,
+} from "../../../../constants/filterSettings";
 
 interface filterProps {
   text: string;
@@ -27,39 +32,48 @@ const FiltersFirstTab = (filters: filtersProps) => {
     brands.length = 0;
     models.length = 0;
     disabledList.length = 0;
+
     if (filters.countries) {
       for (let country of filters.countries) {
         countries.push({
           text: country.title,
-          name: "Countries",
+          name: CountriesProp,
           value: country.id,
         });
         for (let brand of country.brands) {
           brands.push({
             text: brand.title,
-            name: "Brands",
+            name: BrandsProp,
             value: brand.id,
           });
-          if (!searchParams.getAll("Countries").includes(country.id)) {
+
+          const disableBrands =
+            searchParams.getAll(CountriesProp).length > 0 &&
+            !searchParams.getAll(CountriesProp).includes(country.id);
+          if (disableBrands) {
             disabledList.push(brand.id);
           }
 
           for (let model of brand.models) {
-            models.push({ text: model.title, name: "Models", value: model.id });
-            if (!searchParams.getAll("Brands").includes(brand.id)) {
+            models.push({
+              text: model.title,
+              name: ModelsProp,
+              value: model.id,
+            });
+
+            const disableModels =
+              searchParams.getAll(BrandsProp).length > 0 &&
+              !searchParams.getAll(BrandsProp).includes(brand.id);
+            if (disableBrands || disableModels) {
               disabledList.push(model.id);
             }
           }
         }
       }
-      console.log(disabledList.length, brands.length + models.length);
     }
     setCountries(countries);
     setBrands(brands);
     setModels(models);
-    if (disabledList.length === brands.length + models.length) {
-      disabledList.length = 0;
-    }
     setDisabledList(disabledList);
     setLoaded(true);
   };

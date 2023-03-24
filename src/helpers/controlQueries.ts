@@ -1,6 +1,5 @@
 export const controlQueries = (
   query: [string, string][],
-  setSearchParams: (nextInit: [string, string][]) => void,
   param: string = "PageNumber",
   value: string = "1"
 ) => {
@@ -10,7 +9,7 @@ export const controlQueries = (
   } else {
     query.push([param, value]);
   }
-  setSearchParams(query);
+  return query;
 };
 
 export const removeQueries = (props: {
@@ -19,7 +18,7 @@ export const removeQueries = (props: {
   value?: string;
   excludeParams?: string[];
 }) => {
-  const newQuery = [];
+  let newQuery = [];
   for (const entry of props.searchParams.entries()) {
     if (
       JSON.stringify(entry) !== JSON.stringify([props.name, props.value]) &&
@@ -27,5 +26,6 @@ export const removeQueries = (props: {
     )
       newQuery.push(entry);
   }
+  newQuery = controlQueries(newQuery);
   return newQuery;
 };

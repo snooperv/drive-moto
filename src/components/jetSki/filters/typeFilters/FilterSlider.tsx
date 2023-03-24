@@ -32,15 +32,16 @@ const FilterSlider = (props: {
 
   const handleChangeCommitted = () => {
     const prices = ["MinPrice", "MaxPrice"];
-    const query = removeQueries({
+    let query = removeQueries({
       searchParams,
       excludeParams: prices,
     });
-    value[0] !== props.price.minPrice &&
-      controlQueries(query, setSearchParams, prices[0], String(value[0]));
-    value[1] !== props.price.maxPrice &&
-      controlQueries(query, setSearchParams, prices[1], String(value[1]));
-    controlQueries(query, setSearchParams);
+    if (value[0] !== props.price.minPrice)
+      query = controlQueries(query, prices[0], String(value[0]));
+    if (value[1] !== props.price.maxPrice)
+      query = controlQueries(query, prices[1], String(value[1]));
+    query = controlQueries(query);
+    setSearchParams(query);
   };
 
   const sliderStyles = {

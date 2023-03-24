@@ -34,9 +34,9 @@ const FilterChecks = (props: {
     const target = event.target as HTMLInputElement;
     let query = [...searchParams];
     if (target.checked) {
-      controlQueries(query, setSearchParams);
+      query = controlQueries(query);
       query.push([name, value]);
-    } else query = query = removeQueries({ searchParams, name, value });
+    } else query = removeQueries({ searchParams, name, value });
 
     setSearchParams(query);
   };
@@ -99,6 +99,6 @@ const checkboxStyle = {
   rowGap: "5px",
 };
 
-FilterChecks.defaultProps = {isInput: false, isMore: false};
+FilterChecks.defaultProps = { isInput: false, isMore: false };
 
 export default FilterChecks;

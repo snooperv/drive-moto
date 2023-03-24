@@ -28,7 +28,7 @@ const FilterButtons = (props: { title: string }) => {
     const button = event.target as HTMLButtonElement;
     let query = [...searchParams];
     if (button.ariaPressed === "false") {
-      controlQueries(query, setSearchParams);
+      query = controlQueries(query);
       query.push(["Actions", button.value]);
     } else
       query = removeQueries({

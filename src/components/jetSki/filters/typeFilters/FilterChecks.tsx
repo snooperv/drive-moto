@@ -25,7 +25,7 @@ const FilterChecks = (props: {
       )[0];
       if (current && props.disabledList?.includes(current.value)) {
         newQuery = removeQueries({
-          searchParams,
+          searchParams: new URLSearchParams(newQuery),
           name: current.name,
           value: current.value,
         });

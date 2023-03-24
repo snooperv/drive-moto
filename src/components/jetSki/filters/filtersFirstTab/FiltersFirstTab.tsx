@@ -40,6 +40,7 @@ const FiltersFirstTab = (filters: filtersProps) => {
           name: CountriesProp,
           value: country.id,
         });
+
         for (let brand of country.brands) {
           brands.push({
             text: brand.title,
@@ -71,6 +72,7 @@ const FiltersFirstTab = (filters: filtersProps) => {
         }
       }
     }
+
     setCountries(countries);
     setBrands(brands);
     setModels(models);

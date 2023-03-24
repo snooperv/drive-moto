@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./filters.module.scss";
 import filterArrow from "../../../../assets/img/main/filterArrow.svg";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
@@ -17,11 +17,32 @@ const FilterChecks = (props: {
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  useEffect(() => {
+    let newQuery: [string, string][] | URLSearchParams = searchParams;
+    for (let entry of searchParams.entries()) {
+      const current = props.checks.filter(
+        (check) => entry[0] === check.name && entry[1] === check.value
+      )[0];
+      if (current && props.disabledList?.includes(current.value)) {
+        newQuery = removeQueries({
+          searchParams,
+          name: current.name,
+          value: current.value,
+        });
+      }
+    }
+    if (Array.isArray(newQuery)) {
+      setSearchParams(newQuery);
+    }
+  }, [props, searchParams, setSearchParams]);
+
   const isChecked = (name: string, value: string) => {
     let flag = false;
-    for (const entry of searchParams.entries()) {
-      const [param, valueQuery] = entry;
-      if (param === name && valueQuery === value) flag = true;
+    if (!props.disabledList?.includes(value)) {
+      for (const entry of searchParams.entries()) {
+        const [param, valueQuery] = entry;
+        if (param === name && valueQuery === value) flag = true;
+      }
     }
     return flag;
   };

@@ -3,6 +3,10 @@ import styles from "./filters.module.scss";
 import filterArrow from "../../../../assets/img/main/filterArrow.svg";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
+import {
+  controlQueries,
+  removeQueries,
+} from "../../../../helpers/controlQueries";
 
 const FilterChecks = (props: {
   title: string;
@@ -11,14 +15,6 @@ const FilterChecks = (props: {
   isMore?: boolean;
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const checkboxStyle = {
-    ".MuiTypography-root": { fontFamily: "inherit", fontSize: "14px" },
-    ".MuiFormControlLabel-root": { marginRight: 0 },
-
-    display: "grid",
-    rowGap: "5px",
-  };
 
   const isChecked = (name: string, value: string) => {
     let flag = false;
@@ -36,15 +32,11 @@ const FilterChecks = (props: {
   ) => {
     const target = event.target as HTMLInputElement;
     let query = [...searchParams];
-    if (target.checked) query.push([name, value]);
-    else {
-      const newQuery = [];
-      for (const entry of searchParams.entries()) {
-        if (JSON.stringify(entry) !== JSON.stringify([name, value]))
-          newQuery.push(entry);
-      }
-      query = newQuery;
-    }
+    if (target.checked) {
+      controlQueries(query, setSearchParams);
+      query.push([name, value]);
+    } else query = query = removeQueries({ searchParams, name, value });
+
     setSearchParams(query);
   };
 
@@ -93,6 +85,14 @@ const FilterChecks = (props: {
       {props.isMore && <span className={styles.showMore}>Показать еще</span>}
     </div>
   );
+};
+
+const checkboxStyle = {
+  ".MuiTypography-root": { fontFamily: "inherit", fontSize: "14px" },
+  ".MuiFormControlLabel-root": { marginRight: 0 },
+
+  display: "grid",
+  rowGap: "5px",
 };
 
 FilterChecks.defaultProps = { isInput: false, isMore: false };

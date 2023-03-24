@@ -4,6 +4,10 @@ import filterArrow from "../../../../assets/img/main/filterArrow.svg";
 import { Box, Slider } from "@mui/material";
 import parsePrice from "../../../../helpers/parsePrice";
 import { useSearchParams } from "react-router-dom";
+import {
+  controlQueries,
+  removeQueries,
+} from "../../../../helpers/controlQueries";
 
 const FilterSlider = (props: {
   title: string;
@@ -20,38 +24,23 @@ const FilterSlider = (props: {
     if (props.isReset) {
       setValue([props.price.minPrice, props.price.maxPrice]);
     }
-    const timer = setTimeout(() => {
-      let query = [...searchParams];
-      if (
-        String(query).includes("MinPrice") ||
-        String(query).includes("MaxPrice")
-      ) {
-        const newQuery = [];
-        for (const entry of searchParams.entries()) {
-          const [param] = entry;
-          if (param !== "MinPrice" && param !== "MaxPrice")
-            newQuery.push(entry);
-        }
-        query = newQuery;
-      }
-      value[0] !== props.price.minPrice &&
-        query.push(["MinPrice", String(value[0])]);
-      value[1] !== props.price.maxPrice &&
-        query.push(["MaxPrice", String(value[1])]);
-      setSearchParams(query);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [
-    props.isReset,
-    props.price.maxPrice,
-    props.price.minPrice,
-    searchParams,
-    setSearchParams,
-    value,
-  ]);
+  }, [props.isReset, props.price.maxPrice, props.price.minPrice]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
+  };
+
+  const handleChangeCommitted = () => {
+    const prices = ["MinPrice", "MaxPrice"];
+    const query = removeQueries({
+      searchParams,
+      excludeParams: prices,
+    });
+    value[0] !== props.price.minPrice &&
+      controlQueries(query, setSearchParams, prices[0], String(value[0]));
+    value[1] !== props.price.maxPrice &&
+      controlQueries(query, setSearchParams, prices[1], String(value[1]));
+    controlQueries(query, setSearchParams);
   };
 
   const sliderStyles = {
@@ -69,7 +58,7 @@ const FilterSlider = (props: {
     },
   };
 
-  const changePrice = (
+  const changePriceInput = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
     price: string
   ) => {
@@ -106,6 +95,7 @@ const FilterSlider = (props: {
           getAriaLabel={() => "Price range"}
           value={value}
           onChange={handleChange}
+          onChangeCommitted={handleChangeCommitted}
           valueLabelDisplay="auto"
           min={props.price.minPrice}
           max={props.price.maxPrice}
@@ -116,13 +106,13 @@ const FilterSlider = (props: {
       <div className={styles.prices}>
         <div className={styles.prices__min}>
           от{" "}
-          <span onClick={(e) => changePrice(e, "min")}>
+          <span onClick={(e) => changePriceInput(e, "min")}>
             {parsePrice(value[0])}
           </span>
         </div>
         <div className={styles.prices__max}>
           до{" "}
-          <span onClick={(e) => changePrice(e, "max")}>
+          <span onClick={(e) => changePriceInput(e, "max")}>
             {parsePrice(value[1])}
           </span>
         </div>

@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import { PageSize } from "../../../../constants/pageSetting";
 
 const FiltersFirstTab = (filters: filtersProps) => {
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isReset, setIsReset] = useState(false);
   let countries = [],
     brands = [],
@@ -32,14 +32,7 @@ const FiltersFirstTab = (filters: filtersProps) => {
 
   const applyFilters = (e: FormEvent) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const checked = Array.from(
-      form.querySelectorAll('input[type="checkbox"]:checked')
-    ) as HTMLInputElement[];
-    const filters = `PageNumber=1&PageSize=${PageSize}&${checked
-      .map((type) => `${type.name}=${type.value}`)
-      .join("&")}`;
-    setSearchParams(filters);
+    setSearchParams(searchParams);
   };
 
   const clearFilters = () => {

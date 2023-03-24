@@ -3,6 +3,10 @@ import styles from "./filters.module.scss";
 import filterArrow from "../../../../assets/img/main/filterArrow.svg";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
+import {
+  removeQueries,
+  controlQueries,
+} from "../../../../helpers/controlQueries";
 
 const FilterButtons = (props: { title: string }) => {
   const isChecked = () => {
@@ -23,15 +27,16 @@ const FilterButtons = (props: { title: string }) => {
   ) => {
     const button = event.target as HTMLButtonElement;
     let query = [...searchParams];
-    if (button.ariaPressed === "false") query.push(["Actions", button.value]);
-    else {
-      const newQuery = [];
-      for (const entry of searchParams.entries()) {
-        if (JSON.stringify(entry) !== JSON.stringify(["Actions", button.value]))
-          newQuery.push(entry);
-      }
-      query = newQuery;
-    }
+    if (button.ariaPressed === "false") {
+      controlQueries(query, setSearchParams);
+      query.push(["Actions", button.value]);
+    } else
+      query = removeQueries({
+        searchParams,
+        name: "Actions",
+        value: button.value,
+      });
+
     setSearchParams(query);
 
     let copy = Object.assign([], alignment);
@@ -40,31 +45,6 @@ const FilterButtons = (props: { title: string }) => {
       delete copy[index];
     } else copy.push(newAlignment);
     setAlignment(copy);
-  };
-
-  const buttonsStyles = {
-    gap: "10px",
-    ".MuiButtonBase-root": {
-      border: "none",
-      borderRadius: "3px !important",
-      background: "#F0F0F4",
-      padding: "5px 15px",
-      color: "#C4C4C4",
-      fontSize: "12px",
-      fontWeight: 700,
-      letterSpacing: "0.07em",
-    },
-    ".Mui-selected": {
-      background: "#1C62CD !important",
-      color: "#FFFFFF !important",
-    },
-    ".MuiButtonBase-root:hover": {
-      background: "#2F3035",
-      color: "#FFFFFF",
-    },
-    "@media  (max-width: 1200px)": {
-      flexWrap: "wrap",
-    },
   };
 
   return (
@@ -89,6 +69,31 @@ const FilterButtons = (props: { title: string }) => {
       </ToggleButtonGroup>
     </div>
   );
+};
+
+const buttonsStyles = {
+  gap: "10px",
+  ".MuiButtonBase-root": {
+    border: "none",
+    borderRadius: "3px !important",
+    background: "#F0F0F4",
+    padding: "5px 15px",
+    color: "#C4C4C4",
+    fontSize: "12px",
+    fontWeight: 700,
+    letterSpacing: "0.07em",
+  },
+  ".Mui-selected": {
+    background: "#1C62CD !important",
+    color: "#FFFFFF !important",
+  },
+  ".MuiButtonBase-root:hover": {
+    background: "#2F3035",
+    color: "#FFFFFF",
+  },
+  "@media  (max-width: 1200px)": {
+    flexWrap: "wrap",
+  },
 };
 
 export default FilterButtons;

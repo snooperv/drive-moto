@@ -7,6 +7,47 @@ import { getFilters } from "../../../services/data";
 import { filtersProps } from "./filtersProps";
 import FiltersFirstTab from "./filtersFirstTab/FiltersFirstTab";
 
+const Filters = () => {
+  const [value, setValue] = useState(0);
+  const [filters, setFilters] = useState<filtersProps>({});
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  useEffect(() => {
+    getFilters().then((res) => {
+      setFilters(res);
+    });
+  }, []);
+
+  return (
+    <div className={styles.container}>
+      <Box sx={{ width: "100%" }}>
+        <AntTabs value={value} onChange={handleChange} aria-label="basic tabs">
+          <AntTab label="Параметры" {...a11yProps(0)} />
+          <AntTab label="По марке" {...a11yProps(1)} />
+        </AntTabs>
+
+        <TabPanel value={value} index={0}>
+          {Object.keys(filters).length !== 0 ? (
+            <FiltersFirstTab {...filters} />
+          ) : (
+            <div className={styles.filters__empty}>
+              К сожалению, список фильтров пуст
+            </div>
+          )}
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <div className={styles.filters__empty}>
+            <NotFilter />
+          </div>
+        </TabPanel>
+      </Box>
+    </div>
+  );
+};
+
 const AntTabs = styled(Tabs)({
   minHeight: "auto",
   gap: 42,
@@ -72,46 +113,5 @@ function a11yProps(index: number) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-
-const Filters = () => {
-  const [value, setValue] = useState(0);
-  const [filters, setFilters] = useState<filtersProps>({});
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  useEffect(() => {
-    getFilters().then((res) => {
-      setFilters(res);
-    });
-  }, []);
-
-  return (
-    <div className={styles.container}>
-      <Box sx={{ width: "100%" }}>
-        <AntTabs value={value} onChange={handleChange} aria-label="basic tabs">
-          <AntTab label="Параметры" {...a11yProps(0)} />
-          <AntTab label="По марке" {...a11yProps(1)} />
-        </AntTabs>
-
-        <TabPanel value={value} index={0}>
-          {Object.keys(filters).length !== 0 ? (
-            <FiltersFirstTab {...filters} />
-          ) : (
-            <div className={styles.filters__empty}>
-              К сожалению, список фильтров пуст
-            </div>
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <div className={styles.filters__empty}>
-            <NotFilter />
-          </div>
-        </TabPanel>
-      </Box>
-    </div>
-  );
-};
 
 export default Filters;

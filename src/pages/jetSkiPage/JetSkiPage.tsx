@@ -12,6 +12,7 @@ import { Pagination, Stack } from "@mui/material";
 import { cardProps } from "./cardProps";
 import { useSearchParams } from "react-router-dom";
 import { PageSize } from "../../constants/pageSetting";
+import { useGlobal } from "../../store";
 
 const JetSkiPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,6 +20,7 @@ const JetSkiPage = () => {
   const [cards, setCards] = useState<cardProps[]>([]);
   const [pageCount, setPageCount] = useState<number>(1);
   const mainRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const [globalState] = useGlobal();
 
   useEffect(() => {
     if (String(searchParams).length === 0)
@@ -29,11 +31,13 @@ const JetSkiPage = () => {
   }, [PageNumber, searchParams, setSearchParams]);
 
   useEffect(() => {
-    getProducts(searchParams).then((res) => {
-      setPageCount(res.pageCount);
-      setCards(res.products);
-    });
-  }, [searchParams]);
+    if (!globalState.updateDependencies) {
+      getProducts(searchParams).then((res) => {
+        setPageCount(res.pageCount);
+        setCards(res.products);
+      });
+    }
+  }, [globalState.updateDependencies, searchParams]);
 
   const changePage = (e: React.ChangeEvent<unknown>, page: number) => {
     mainRef.current.scrollIntoView();

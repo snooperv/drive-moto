@@ -11,6 +11,7 @@ import {
   CountriesProp,
   ModelsProp,
 } from "../../../../constants/filterSettings";
+import { actions } from "../../../../store";
 
 interface filterProps {
   text: string;
@@ -25,7 +26,10 @@ const FiltersFirstTab = (filters: filtersProps) => {
   const [brands, setBrands] = useState<filterProps[]>([]);
   const [models, setModels] = useState<filterProps[]>([]);
   const [disabledList, setDisabledList] = useState<string[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const [availability] = useState<filterProps[]>([
+    { text: "В наличие", name: "IsInInventory", value: "true" },
+    { text: "Под заказ", name: "IsOnRequest", value: "true" },
+  ]);
 
   const getData = () => {
     countries.length = 0;
@@ -77,7 +81,7 @@ const FiltersFirstTab = (filters: filtersProps) => {
     setBrands(brands);
     setModels(models);
     setDisabledList(disabledList);
-    setLoaded(true);
+    actions.setLoaded(true);
   };
 
   useEffect(getData, [
@@ -87,7 +91,6 @@ const FiltersFirstTab = (filters: filtersProps) => {
     filters.countries,
     models,
     searchParams,
-    loaded,
   ]);
 
   const applyFilters = (e: FormEvent) => {
@@ -106,13 +109,7 @@ const FiltersFirstTab = (filters: filtersProps) => {
 
   return (
     <form className={styles.filters} onSubmit={applyFilters}>
-      <FilterChecks
-        title="Наличие"
-        checks={[
-          { text: "В наличие", name: "IsInInventory", value: "true" },
-          { text: "Под заказ", name: "IsOnRequest", value: "true" },
-        ]}
-      />
+      <FilterChecks title="Наличие" checks={availability} />
       <FilterSlider
         title="Цена"
         price={{

@@ -7,6 +7,7 @@ import {
   controlQueries,
   removeQueries,
 } from "../../../../helpers/controlQueries";
+import { actions, useGlobal } from "../../../../store";
 
 const FilterChecks = (props: {
   title: string;
@@ -16,25 +17,42 @@ const FilterChecks = (props: {
   disabledList?: string[];
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [globalState] = useGlobal();
 
   useEffect(() => {
     let newQuery: [string, string][] | URLSearchParams = searchParams;
-    for (let entry of searchParams.entries()) {
-      const current = props.checks.filter(
-        (check) => entry[0] === check.name && entry[1] === check.value
-      )[0];
-      if (current && props.disabledList?.includes(current.value)) {
-        newQuery = removeQueries({
-          searchParams: new URLSearchParams(newQuery),
-          name: current.name,
-          value: current.value,
-        });
+
+    if (globalState.dataLoaded) {
+      if (
+        props.disabledList &&
+        props.disabledList.length > 0 &&
+        globalState.updateDependencies
+      ) {
+        for (let entry of searchParams.entries()) {
+          const current = props.checks.filter(
+            (check) => entry[0] === check.name && entry[1] === check.value
+          )[0];
+          if (current && props.disabledList?.includes(current.value)) {
+            newQuery = removeQueries({
+              searchParams: new URLSearchParams(newQuery),
+              name: current.name,
+              value: current.value,
+            });
+          }
+        }
       }
+
+      Array.isArray(newQuery) && setSearchParams(newQuery);
+      actions.setUpdateDependencies(false);
     }
-    if (Array.isArray(newQuery)) {
-      setSearchParams(newQuery);
-    }
-  }, [props, searchParams, setSearchParams]);
+  }, [
+    globalState.dataLoaded,
+    globalState.updateDependencies,
+    props.checks,
+    props.disabledList,
+    searchParams,
+    setSearchParams,
+  ]);
 
   const isChecked = (name: string, value: string) => {
     let flag = false;
@@ -59,6 +77,8 @@ const FilterChecks = (props: {
       query.push([name, value]);
     } else query = removeQueries({ searchParams, name, value });
 
+    actions.setLoaded(false);
+    actions.setUpdateDependencies(true);
     setSearchParams(query);
   };
 

@@ -1,24 +1,10 @@
 import React from "react";
 
-export const validateName = (
+export const validateField = (
   name: string,
   setNameValid: (nameValid: string) => void
 ) => {
-  name.length > 2 ? setNameValid("true") : setNameValid("false");
-};
-
-export const validateEmail = (
-  email: string,
-  setEmailValid: (emailValid: string) => void
-) => {
-  email.includes("@") ? setEmailValid("true") : setEmailValid("false");
-};
-
-export const validatePassword = (
-  password: string,
-  setPasswordValid: (passwordValid: string) => void
-) => {
-  password.length > 2 ? setPasswordValid("true") : setPasswordValid("false");
+  name.length > 0 ? setNameValid("true") : setNameValid("false");
 };
 
 export const onNameChange = (

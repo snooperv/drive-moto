@@ -7,9 +7,7 @@ import {
   onEmailChange,
   onNameChange,
   onPasswordChange,
-  validateEmail,
-  validateName,
-  validatePassword,
+  validateField,
 } from "../../helpers/validateForm";
 import { postRegistration } from "../../services/account";
 
@@ -28,7 +26,7 @@ const AuthModal = (props: {
   const [nameValid, setNameValid] = useState("");
   const [emailValid, setEmailValid] = useState("");
   const [passwordValid, setPasswordValid] = useState("");
-  const [submitError, setSubmitError] = useState(false);
+  const [submitErrorName, setSubmitErrorName] = useState("");
   const [submitErrorText, setSubmitErrorText] = useState("");
 
   const openAnother = () => {
@@ -48,16 +46,16 @@ const AuthModal = (props: {
     setNameValid("");
     setEmailValid("");
     setPasswordValid("");
-    setSubmitError(false);
+    setSubmitErrorName("");
     setSubmitErrorText("");
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    validateEmail(email, setEmailValid);
-    validatePassword(password, setPasswordValid);
+    validateField(email, setEmailValid);
+    validateField(password, setPasswordValid);
     if (props.type === "register") {
-      validateName(name, setNameValid);
+      validateField(name, setNameValid);
     }
   };
 
@@ -76,9 +74,23 @@ const AuthModal = (props: {
       postRegistration({ email, password, name })
         .then((res) => {
           if (res.status >= 400 && res.status < 500) {
-            setSubmitError(true);
-            setSubmitErrorText(res.data);
+            if (
+              Array.isArray(res.data) &&
+              res.data[0].code === "InvalidUserName"
+            ) {
+              setSubmitErrorName("name");
+              setSubmitErrorText(
+                "Имя должно содержать только цифры или английские буквы без пробелов"
+              );
+            } else if (res.data.name) {
+              setSubmitErrorName(res.data.name);
+              setSubmitErrorText(res.data.errorMessage);
+            } else {
+              setSubmitErrorName("Another");
+              setSubmitErrorText(res.data);
+            }
           } else {
+            localStorage.setItem("token", res.data.token);
             handleClose();
           }
         })
@@ -95,6 +107,8 @@ const AuthModal = (props: {
     password,
     passwordValid,
     props.type,
+    submitErrorName,
+    submitErrorText,
   ]);
 
   return (
@@ -115,9 +129,9 @@ const AuthModal = (props: {
               onChange={(e) => onNameChange(e, setName, clearErrors)}
             />
           )}
-          {nameValid === "false" && (
+          {(nameValid === "false" || submitErrorName === "name") && (
             <span className={styles.error}>
-              Заполните в виде: Фамилия Имя Отчество
+              {submitErrorText || "Обязательно для заполнения"}
             </span>
           )}
 
@@ -129,8 +143,10 @@ const AuthModal = (props: {
             value={email}
             onChange={(e) => onEmailChange(e, setEmail, clearErrors)}
           />
-          {emailValid === "false" && (
-            <span className={styles.error}>Заполните корректный email</span>
+          {(emailValid === "false" || submitErrorName === "email") && (
+            <span className={styles.error}>
+              {submitErrorText || "Обязательно для заполнения"}
+            </span>
           )}
 
           <input
@@ -141,9 +157,9 @@ const AuthModal = (props: {
             value={password}
             onChange={(e) => onPasswordChange(e, setPassword, clearErrors)}
           />
-          {passwordValid === "false" && (
+          {(passwordValid === "false" || submitErrorName === "password") && (
             <span className={styles.error}>
-              Пароль должен быть больше 6 символов
+              {submitErrorText || "Обязательно для заполнения"}
             </span>
           )}
 
@@ -154,7 +170,7 @@ const AuthModal = (props: {
           <span className={styles.alternative} onClick={openAnother}>
             {props.titleAnother}
           </span>
-          {submitError && (
+          {submitErrorName === "Another" && (
             <span className={styles.submitError}>{submitErrorText}</span>
           )}
         </form>

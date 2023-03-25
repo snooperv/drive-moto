@@ -33,3 +33,37 @@ export const onPasswordChange = (
   setPassword(e.target.value);
   clearErrors();
 };
+
+export const validateAnswer = (
+  res: any,
+  setSubmitErrorName: (submitErrorName: string) => void,
+  setSubmitErrorText: (submitErrorText: string) => void
+) => {
+  if (res.status >= 400 && res.status < 500) {
+    try {
+      if (Array.isArray(res.data) && res.data[0].code === "InvalidUserName") {
+        setSubmitErrorName("name");
+        setSubmitErrorText(
+          "Имя должно содержать только цифры или английские буквы без пробелов"
+        );
+      } else if (
+        Array.isArray(res.data) &&
+        res.data[0].code === "DuplicateUserName"
+      ) {
+        setSubmitErrorName("name");
+        setSubmitErrorText("Пользователь с таким именем уже существует");
+      } else if (res.data.name) {
+        setSubmitErrorName(res.data.name);
+        setSubmitErrorText(res.data.errorMessage);
+      } else {
+        setSubmitErrorName("Another");
+        setSubmitErrorText(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return false;
+  } else {
+    return true;
+  }
+};

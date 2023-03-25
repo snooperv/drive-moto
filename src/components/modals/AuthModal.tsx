@@ -7,9 +7,10 @@ import {
   onEmailChange,
   onNameChange,
   onPasswordChange,
+  validateAnswer,
   validateField,
 } from "../../helpers/validateForm";
-import { postRegistration } from "../../services/account";
+import { postLogin, postRegistration } from "../../services/account";
 
 const AuthModal = (props: {
   title: string;
@@ -65,36 +66,30 @@ const AuthModal = (props: {
   }, [clearForm, props]);
 
   useEffect(() => {
+    let request: any;
     if (
       props.type === "register" &&
       nameValid === "true" &&
       emailValid === "true" &&
       passwordValid === "true"
     ) {
-      postRegistration({ email, password, name })
-        .then((res) => {
-          if (res.status >= 400 && res.status < 500) {
-            if (
-              Array.isArray(res.data) &&
-              res.data[0].code === "InvalidUserName"
-            ) {
-              setSubmitErrorName("name");
-              setSubmitErrorText(
-                "Имя должно содержать только цифры или английские буквы без пробелов"
-              );
-            } else if (res.data.name) {
-              setSubmitErrorName(res.data.name);
-              setSubmitErrorText(res.data.errorMessage);
-            } else {
-              setSubmitErrorName("Another");
-              setSubmitErrorText(res.data);
-            }
-          } else {
-            localStorage.setItem("token", res.data.token);
+      request = postRegistration({ email, password, name });
+    } else if (
+      props.type === "login" &&
+      emailValid === "true" &&
+      passwordValid === "true"
+    ) {
+      request = postLogin({ email, password });
+    }
+    if (request) {
+      request
+        .then((res: any) => {
+          if (validateAnswer(res, setSubmitErrorName, setSubmitErrorText)) {
+            localStorage.setItem("token", res.token);
             handleClose();
           }
         })
-        .catch((error) => {
+        .catch((error: any) => {
           console.log(error);
         });
     }
@@ -107,8 +102,6 @@ const AuthModal = (props: {
     password,
     passwordValid,
     props.type,
-    submitErrorName,
-    submitErrorText,
   ]);
 
   return (

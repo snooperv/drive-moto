@@ -11,18 +11,18 @@ export const postRegistration = async (data: object) => {
   return await request(postRegistrationAPI(), "POST", data);
 };
 
-export const postLogin = () => async (data: object) => {
+export const postLogin = async (data: object) => {
   return await request(postLoginAPI(), "POST", data);
 };
 
-export const getRefreshToken = () => async () => {
+export const getRefreshToken = async () => {
   return await request(getRefreshTokenAPI());
 };
 
-export const postLogout = () => async (data: object) => {
+export const postLogout = async (data: object) => {
   return await request(postLogoutAPI(), "POST", data);
 };
 
-export const getFavorites = () => async () => {
+export const getFavorites = async () => {
   return await request(getFavoritesAPI());
 };

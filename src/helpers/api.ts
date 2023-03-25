@@ -1,8 +1,8 @@
 import urlQueryParts from "./urlQueryParts";
 
-const API_BASE_URL = "https://frontexam.dock8.66bit.ru/";
+const API_BASE_URL = "https://frontexam.dock8.66bit.ru";
 const API_PRODUCTS = "api/products";
-const API_URL = `${API_BASE_URL}${API_PRODUCTS}`;
+const API_URL = `${API_BASE_URL}/${API_PRODUCTS}`;
 
 // ACCOUNT
 export const postRegistrationAPI = () => API_BASE_URL + "/registration";

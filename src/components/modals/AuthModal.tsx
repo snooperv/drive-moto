@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Modal } from "@mui/material";
 import styles from "./authModal.module.scss";
 import logo from "../../assets/img/header/logo.svg";
@@ -11,6 +11,7 @@ import {
   validateName,
   validatePassword,
 } from "../../helpers/validateForm";
+import { postRegistration } from "../../services/account";
 
 const AuthModal = (props: {
   title: string;
@@ -30,35 +31,18 @@ const AuthModal = (props: {
   const [submitError, setSubmitError] = useState(false);
   const [submitErrorText, setSubmitErrorText] = useState("");
 
-  useEffect(() => {
-    if (
-      props.type === "register" &&
-      nameValid === "true" &&
-      emailValid === "true" &&
-      passwordValid === "true"
-    ) {
-      setSubmitError(true);
-      setSubmitErrorText("Произошла ошибка при отправке данных");
-    }
-  }, [email, emailValid, name, nameValid, password, passwordValid, props.type]);
-
-  const handleClose = () => {
-    clearForm();
-    props.setOpen(false);
-  };
-
   const openAnother = () => {
     clearForm();
     props.setOpenAnother(true);
     props.setOpen(false);
   };
 
-  const clearForm = () => {
+  const clearForm = useCallback(() => {
     setName("");
     setEmail("");
     setPassword("");
     clearErrors();
-  };
+  }, []);
 
   const clearErrors = () => {
     setNameValid("");
@@ -76,6 +60,42 @@ const AuthModal = (props: {
       validateName(name, setNameValid);
     }
   };
+
+  const handleClose = useCallback(() => {
+    clearForm();
+    props.setOpen(false);
+  }, [clearForm, props]);
+
+  useEffect(() => {
+    if (
+      props.type === "register" &&
+      nameValid === "true" &&
+      emailValid === "true" &&
+      passwordValid === "true"
+    ) {
+      postRegistration({ email, password, name })
+        .then((res) => {
+          if (res.status >= 400 && res.status < 500) {
+            setSubmitError(true);
+            setSubmitErrorText(res.data);
+          } else {
+            handleClose();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [
+    email,
+    emailValid,
+    handleClose,
+    name,
+    nameValid,
+    password,
+    passwordValid,
+    props.type,
+  ]);
 
   return (
     <Modal open={props.open} onClose={handleClose} disableAutoFocus={true}>

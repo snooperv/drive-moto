@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./filters.module.scss";
 import { styled } from "@mui/material/styles";
 import NotFilter from "./typeFilters/NotFilter";
-import { getFilters } from "../../../services/data";
+import { getFilters } from "../../../services/products";
 import { filtersProps } from "./filtersProps";
 import FiltersFirstTab from "./filtersFirstTab/FiltersFirstTab";
 

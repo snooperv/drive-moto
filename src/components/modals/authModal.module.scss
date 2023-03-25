@@ -60,3 +60,14 @@
   color: #1c62cd;
   cursor: pointer;
 }
+
+.error {
+  font-size: math.div(12em, $font-size);
+  color: red;
+}
+
+.submitError {
+  font-size: math.div(12em, $font-size);
+  color: red;
+  align-self: center;
+}

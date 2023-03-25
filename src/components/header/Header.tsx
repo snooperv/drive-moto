@@ -5,8 +5,7 @@ import logo from "../../assets/img/header/logo.svg";
 import location from "../../assets/img/header/location.svg";
 import avatar from "../../assets/img/header/profile.svg";
 import cart from "../../assets/img/header/cart.svg";
-import LoginModal from "../modals/LoginModal";
-import RegisterModal from "../modals/RegisterModal";
+import AuthModal from "../modals/AuthModal";
 
 const Header = () => {
   const pageIsActive = (isActive: boolean) =>
@@ -75,15 +74,23 @@ const Header = () => {
           Запчасти
         </NavLink>
       </div>
-      <LoginModal
-        openLogin={openLogin}
-        setOpenLogin={setOpenLogin}
-        setOpenRegister={setOpenRegister}
+      <AuthModal
+        title="Вход"
+        titleAnother="Регистрация"
+        buttonText="Войти"
+        type="login"
+        open={openLogin}
+        setOpen={setOpenLogin}
+        setOpenAnother={setOpenRegister}
       />
-      <RegisterModal
-        openRegister={openRegister}
-        setOpenLogin={setOpenLogin}
-        setOpenRegister={setOpenRegister}
+      <AuthModal
+        title="Регистрация"
+        titleAnother="Вход"
+        buttonText="Регистрация"
+        type="register"
+        open={openRegister}
+        setOpen={setOpenRegister}
+        setOpenAnother={setOpenLogin}
       />
     </header>
   );

@@ -7,7 +7,7 @@ import SearchName from "../../components/jetSki/searchName/SearchName";
 import PageTitle from "../../components/jetSki/pageTitle/PageTitle";
 import Filters from "../../components/jetSki/filters/Filters";
 import Product from "../../components/jetSki/product/Product";
-import { getProducts } from "../../services/data";
+import { getProducts } from "../../services/products";
 import { Pagination, Stack } from "@mui/material";
 import { cardProps } from "./cardProps";
 import { useSearchParams } from "react-router-dom";

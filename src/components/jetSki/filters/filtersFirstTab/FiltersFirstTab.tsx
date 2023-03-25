@@ -12,6 +12,7 @@ import {
   ModelsProp,
 } from "../../../../constants/filterSettings";
 import { actions } from "../../../../store";
+import ButtonApply from "../../../buttons/ButtonApply";
 
 interface filterProps {
   text: string;
@@ -138,9 +139,7 @@ const FiltersFirstTab = (filters: filtersProps) => {
         isMore
         disabledList={disabledList}
       />
-      <button type="submit" className={styles.apply}>
-        Выбрать
-      </button>
+      <ButtonApply text="Выбрать" />
       <span className={styles.clear} onClick={clearFilters}>
         Сбросить фильтр
       </span>

@@ -5,12 +5,17 @@ import logo from "../../assets/img/header/logo.svg";
 import location from "../../assets/img/header/location.svg";
 import avatar from "../../assets/img/header/profile.svg";
 import cart from "../../assets/img/header/cart.svg";
+import LoginModal from "../modals/LoginModal";
+import RegisterModal from "../modals/RegisterModal";
 
 const Header = () => {
   const pageIsActive = (isActive: boolean) =>
     isActive
       ? `${styles.menuItem} ${styles.menuItem__active}`
       : styles.menuItem;
+  const [openLogin, setOpenLogin] = React.useState(false);
+  const [openRegister, setOpenRegister] = React.useState(false);
+  const handleOpen = () => setOpenLogin(true);
 
   return (
     <header className={styles.container}>
@@ -31,7 +36,7 @@ const Header = () => {
             <span>Москва, ул.Науки 25</span>
           </div>
           <div className={styles.userInfo}>
-            <div className={styles.userInfo__name}>
+            <div className={styles.userInfo__name} onClick={handleOpen}>
               <img src={avatar} alt="Аватар" />
               <span>Войти</span>
             </div>
@@ -70,6 +75,16 @@ const Header = () => {
           Запчасти
         </NavLink>
       </div>
+      <LoginModal
+        openLogin={openLogin}
+        setOpenLogin={setOpenLogin}
+        setOpenRegister={setOpenRegister}
+      />
+      <RegisterModal
+        openRegister={openRegister}
+        setOpenLogin={setOpenLogin}
+        setOpenRegister={setOpenRegister}
+      />
     </header>
   );
 };

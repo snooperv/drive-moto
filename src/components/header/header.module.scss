@@ -80,6 +80,16 @@
       font-size: math.div(10em, $font-size);
       font-weight: 400;
       text-decoration: underline;
+      max-width: 50px;
+      overflow: hidden;
+    }
+  }
+
+  &__active {
+    color: #1c62cd;
+
+    path {
+      fill: #1c62cd;
     }
   }
 

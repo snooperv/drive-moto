@@ -1,6 +1,7 @@
 import request from "../helpers/request";
 import {
   getFavoritesAPI,
+  getProfileAPI,
   getRefreshTokenAPI,
   postLoginAPI,
   postLogoutAPI,
@@ -13,6 +14,10 @@ export const postRegistration = async (data: object) => {
 
 export const postLogin = async (data: object) => {
   return await request(postLoginAPI(), "POST", data);
+};
+
+export const getProfile = async () => {
+  return await request(getProfileAPI());
 };
 
 export const getRefreshToken = async () => {

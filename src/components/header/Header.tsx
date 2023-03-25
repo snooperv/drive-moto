@@ -1,20 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import styles from "./header.module.scss";
 import logo from "../../assets/img/header/logo.svg";
 import location from "../../assets/img/header/location.svg";
-import avatar from "../../assets/img/header/profile.svg";
 import cart from "../../assets/img/header/cart.svg";
 import AuthModal from "../modals/AuthModal";
+import Avatar from "./Avatar";
+import { useGlobal } from "../../store";
+import { getProfile } from "../../services/account";
 
 const Header = () => {
   const pageIsActive = (isActive: boolean) =>
     isActive
       ? `${styles.menuItem} ${styles.menuItem__active}`
       : styles.menuItem;
+  const favouriteIsActive = (isActive: boolean) =>
+    isActive
+      ? `${styles.userInfo__name} ${styles.userInfo__active}`
+      : styles.userInfo__name;
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
+  const [username, setUsername] = React.useState("");
+  const [globalState] = useGlobal();
+
   const handleOpen = () => setOpenLogin(true);
+
+  useEffect(() => {
+    if (globalState.token) {
+      getProfile()
+        .then((res) => {
+          setUsername(res.username);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [globalState.token]);
 
   return (
     <header className={styles.container}>
@@ -35,10 +56,21 @@ const Header = () => {
             <span>Москва, ул.Науки 25</span>
           </div>
           <div className={styles.userInfo}>
-            <div className={styles.userInfo__name} onClick={handleOpen}>
-              <img src={avatar} alt="Аватар" />
-              <span>Войти</span>
-            </div>
+            {globalState.token ? (
+              <NavLink
+                to="/favourite"
+                className={({ isActive }) => favouriteIsActive(isActive)}
+              >
+                <Avatar />
+                <span>{username}</span>
+              </NavLink>
+            ) : (
+              <div className={styles.userInfo__name} onClick={handleOpen}>
+                <Avatar />
+                <span>Войти</span>
+              </div>
+            )}
+
             <div className={styles.userInfo__cart}>
               <img src={cart} alt="Корзина" />
             </div>

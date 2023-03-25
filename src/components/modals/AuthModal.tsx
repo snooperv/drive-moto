@@ -11,6 +11,7 @@ import {
   validateField,
 } from "../../helpers/validateForm";
 import { postLogin, postRegistration } from "../../services/account";
+import { actions } from "../../store";
 
 const AuthModal = (props: {
   title: string;
@@ -81,11 +82,13 @@ const AuthModal = (props: {
     ) {
       request = postLogin({ email, password });
     }
+
     if (request) {
       request
         .then((res: any) => {
           if (validateAnswer(res, setSubmitErrorName, setSubmitErrorText)) {
             localStorage.setItem("token", res.token);
+            actions.setToken(res.token);
             handleClose();
           }
         })

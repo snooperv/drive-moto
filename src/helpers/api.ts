@@ -7,6 +7,7 @@ const API_URL = `${API_BASE_URL}/${API_PRODUCTS}`;
 // ACCOUNT
 export const postRegistrationAPI = () => API_BASE_URL + "/registration";
 export const postLoginAPI = () => API_BASE_URL + "/login";
+export const getProfileAPI = () => API_BASE_URL + "/profile";
 export const getRefreshTokenAPI = () => API_BASE_URL + "/refresh";
 export const postLogoutAPI = () => API_BASE_URL + "/logout";
 export const getFavoritesAPI = () => API_BASE_URL + "/favorites";

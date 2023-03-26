@@ -12,7 +12,9 @@ export const searchProducts = (
   let filterCards = search
     ? products.filter(
         (card: any) =>
-          search.split("+").filter((q) => card.title.toLowerCase().includes(q))
+          search
+            .split("+")
+            .filter((q) => card.title.toLowerCase().includes(q.toLowerCase()))
             .length > 0
       )
     : products;

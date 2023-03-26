@@ -1,27 +1,31 @@
-import { PageSize } from "../constants/pageSetting";
 import { cardProps } from "../components/cards/cardsContent/cardProps";
 import { Dispatch, SetStateAction } from "react";
 
 export const searchProducts = (
-  res: any,
-  search: string,
+  products: any,
   searchParams: URLSearchParams,
+  pageSize: number,
   setPageCount: (pageCount: number) => void,
   setCards: Dispatch<SetStateAction<cardProps[]>>
 ) => {
-  let filterCards = res.products.filter(
-    (card: any) =>
-      search.split("+").filter((q) => card.title.toLowerCase().includes(q))
-        .length > 0
-  );
+  const search = searchParams.get("search");
+  let filterCards = search
+    ? products.filter(
+        (card: any) =>
+          search.split("+").filter((q) => card.title.toLowerCase().includes(q))
+            .length > 0
+      )
+    : products;
 
   setPageCount(
-    filterCards.length > PageSize ? Math.ceil(filterCards.length / PageSize) : 1
+    filterCards.length > pageSize ? Math.ceil(filterCards.length / pageSize) : 1
   );
 
   const pageNumber = Number(searchParams.get("PageNumber"));
-  const start = (pageNumber - 1) * PageSize;
-  const end = pageNumber * PageSize;
+  const start = (pageNumber - 1) * pageSize;
+  const end = pageNumber * pageSize;
+
+  // console.log(start, end);
 
   setCards(filterCards.slice(start, end));
 };

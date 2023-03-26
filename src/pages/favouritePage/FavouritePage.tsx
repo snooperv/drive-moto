@@ -6,20 +6,36 @@ import SearchName from "../../components/jetSki/searchName/SearchName";
 import { getFavorites } from "../../services/account";
 import { cardProps } from "../../components/cards/cardsContent/cardProps";
 import CardsContent from "../../components/cards/cardsContent/CardsContent";
+import { searchProducts } from "../../helpers/seacrhProducts";
+import { useSearchParams } from "react-router-dom";
+import { defaultParamsFavourite } from "../../constants/defaultSearchParams";
+import { PageSizeFavourites } from "../../constants/pageSetting";
 
 const FavouritePage = () => {
   const [globalState] = useGlobal();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [cards, setCards] = useState<cardProps[]>([]);
+  const [pageCount, setPageCount] = useState<number>(1);
 
   useEffect(() => {
-    getFavorites()
-      .then((res) => {
-        setCards(res || []);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    if (String(searchParams).length === 0) {
+      setSearchParams(defaultParamsFavourite);
+    } else {
+      getFavorites()
+        .then((res) => {
+          searchProducts(
+            res,
+            searchParams,
+            PageSizeFavourites,
+            setPageCount,
+            setCards
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [searchParams, setSearchParams]);
 
   return (
     <div className={styles.container}>
@@ -30,7 +46,7 @@ const FavouritePage = () => {
       </div>
       <SearchName />
       <div className={styles.content}>
-        <CardsContent cards={cards} pageCount={1} />
+        <CardsContent cards={cards} pageCount={pageCount} />
       </div>
     </div>
   );

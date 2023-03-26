@@ -14,6 +14,7 @@ import CardsContent from "../../components/cards/cardsContent/CardsContent";
 import { controlQueries } from "../../helpers/controlQueries";
 import { searchProducts } from "../../helpers/seacrhProducts";
 import { defaultSearchParams } from "../../constants/defaultSearchParams";
+import { PageSize } from "../../constants/pageSetting";
 
 const JetSkiPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,29 +24,38 @@ const JetSkiPage = () => {
   const [globalState] = useGlobal();
 
   useEffect(() => {
-    if (String(searchParams).length === 0) setSearchParams(defaultSearchParams);
-  }, [searchParams, setSearchParams]);
-
-  useEffect(() => {
-    if (!globalState.updateDependencies) {
+    if (String(searchParams).length === 0) {
+      setSearchParams(defaultSearchParams);
+    } else if (!globalState.updateDependencies) {
       const search = searchParams.get("search");
       let query = searchParams;
-      if (search !== "") {
+      if (search && search !== "") {
         const newQuery = controlQueries([...query]);
         newQuery.push(["PageSize", "100"]);
         query = new URLSearchParams(newQuery);
       }
 
-      getProducts(query).then((res) => {
-        if (!search) {
-          setCards(res.products || []);
-          setPageCount(res.pageCount || 1);
-        } else {
-          searchProducts(res, search, searchParams, setPageCount, setCards);
-        }
-      });
+      getProducts(query)
+        .then((res) => {
+          console.log(search);
+          if (search) {
+            searchProducts(
+              res.products,
+              searchParams,
+              PageSize,
+              setPageCount,
+              setCards
+            );
+          } else {
+            setPageCount(res.pageCount || 1);
+            setCards(res.products || []);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-  }, [globalState.updateDependencies, searchParams]);
+  }, [globalState.updateDependencies, searchParams, setSearchParams]);
 
   return (
     <div className={styles.container}>

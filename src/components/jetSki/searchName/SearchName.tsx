@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "./searchName.module.scss";
 import { useSearchParams } from "react-router-dom";
-import { defaultSearchParams } from "../../../constants/defaultSearchParams";
 
 const SearchName = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,7 +17,7 @@ const SearchName = () => {
         search: form.model.value,
       });
     } else {
-      setSearchParams(defaultSearchParams);
+      setSearchParams("");
     }
   };
 

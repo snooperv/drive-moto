@@ -5,7 +5,11 @@ import { Pagination, Stack } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { cardProps } from "./cardProps";
 
-const CardsContent = (props: { cards: cardProps[]; pageCount: number }) => {
+const CardsContent = (props: {
+  cards: cardProps[];
+  pageCount: number;
+  setIdRemove?: (idRemove: string) => void;
+}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const PageNumber = Number(searchParams.get("PageNumber")) || 1;
   const mainRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -31,6 +35,7 @@ const CardsContent = (props: { cards: cardProps[]; pageCount: number }) => {
               isInInventory={card.isInInventory}
               isFavourite={card.isFavourite}
               key={index}
+              setIdRemove={props.setIdRemove}
             />
           ))
         ) : (

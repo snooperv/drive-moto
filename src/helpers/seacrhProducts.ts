@@ -17,13 +17,17 @@ export const searchProducts = (
       )
     : products;
 
-  setPageCount(
-    filterCards.length > pageSize ? Math.ceil(filterCards.length / pageSize) : 1
-  );
+  setPageCount(changePageCount(filterCards, pageSize));
 
   const pageNumber = Number(searchParams.get("PageNumber"));
   const start = (pageNumber - 1) * pageSize;
   const end = pageNumber * pageSize;
 
   setCards(filterCards.slice(start, end));
+};
+
+export const changePageCount = (filterCards: cardProps[], pageSize: number) => {
+  return filterCards.length > pageSize
+    ? Math.ceil(filterCards.length / pageSize)
+    : 1;
 };

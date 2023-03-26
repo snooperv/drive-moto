@@ -15,6 +15,7 @@ const Product = (props: {
   isInInventory: boolean;
   img: string;
   isFavourite: boolean;
+  setIdRemove?: (idRemove: string) => void;
 }) => {
   const [globalState] = useGlobal();
   const [isFavourite, setIsFavourite] = useState(props.isFavourite);
@@ -35,6 +36,7 @@ const Product = (props: {
       console.log(error);
     });
     setIsFavourite(false);
+    props.setIdRemove && props.setIdRemove(id);
   };
 
   return (

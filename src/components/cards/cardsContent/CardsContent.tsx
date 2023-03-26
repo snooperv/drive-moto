@@ -8,7 +8,7 @@ import { cardProps } from "./cardProps";
 const CardsContent = (props: {
   cards: cardProps[];
   pageCount: number;
-  setIdRemove?: (idRemove: string) => void;
+  removeFavourite?: (idRemove: string) => Promise<unknown>;
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const PageNumber = Number(searchParams.get("PageNumber")) || 1;
@@ -35,7 +35,7 @@ const CardsContent = (props: {
               isInInventory={card.isInInventory}
               isFavourite={card.isFavourite}
               key={index}
-              setIdRemove={props.setIdRemove}
+              removeFavourite={props.removeFavourite}
             />
           ))
         ) : (

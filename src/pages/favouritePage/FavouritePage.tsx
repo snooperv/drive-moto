@@ -6,10 +6,8 @@ import SearchName from "../../components/jetSki/searchName/SearchName";
 import { getFavorites } from "../../services/account";
 import { cardProps } from "../../components/cards/cardsContent/cardProps";
 import CardsContent from "../../components/cards/cardsContent/CardsContent";
-import { changePageCount, searchProducts } from "../../helpers/seacrhProducts";
 import { useSearchParams } from "react-router-dom";
 import { defaultParamsFavourite } from "../../constants/defaultSearchParams";
-import { PageSizeFavourites } from "../../constants/pageSetting";
 import { controlQueries } from "../../helpers/controlQueries";
 
 const FavouritePage = () => {
@@ -17,34 +15,39 @@ const FavouritePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [cards, setCards] = useState<cardProps[]>([]);
   const [pageCount, setPageCount] = useState<number>(1);
-  const [isRemove, setIsRemove] = useState("");
 
-  useEffect(() => {
-    if (isRemove) {
+  const removeFavourite = (idRemove: string) => {
+    return new Promise((resolve) => {
       const currentPage = Number(searchParams.get("PageNumber"));
-      const newCards = cards.filter((card) => card.id !== isRemove);
+      const newCards = cards.filter((card) => card.id !== idRemove);
 
-      if (changePageCount(newCards, PageSizeFavourites) < currentPage) {
+      if (newCards.length === 0 && currentPage > 1) {
         const newQuery = controlQueries(
           [...searchParams],
           "PageNumber",
           String(currentPage - 1)
         );
-        setSearchParams(newQuery);
-        setPageCount(currentPage - 1);
+        resolve(newQuery);
+      } else {
+        const newQuery = controlQueries(
+          [...searchParams],
+          "PageNumber",
+          String(pageCount)
+        );
+        getFavorites(new URLSearchParams(newQuery))
+          .then((res) => {
+            if (res.products.length > 0 && pageCount !== currentPage)
+              newCards.push(res.products[0]);
+            if (res.products.length === 1) setPageCount(res.pageCount - 1 || 1);
+            setCards(newCards);
+            resolve(false);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-
-      searchProducts(
-        newCards,
-        searchParams,
-        PageSizeFavourites,
-        setPageCount,
-        setCards
-      );
-
-      setIsRemove("");
-    }
-  }, [cards, isRemove, searchParams, setSearchParams]);
+    });
+  };
 
   useEffect(() => {
     if (String(searchParams).length === 0) {
@@ -73,7 +76,7 @@ const FavouritePage = () => {
         <CardsContent
           cards={cards}
           pageCount={pageCount}
-          setIdRemove={setIsRemove}
+          removeFavourite={removeFavourite}
         />
       </div>
     </div>

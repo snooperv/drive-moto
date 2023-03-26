@@ -1,2 +1,2 @@
 export const PageSize = 9;
-export const PageSizeFavourites = 8;
+export const PageSizeFavourites = 2;

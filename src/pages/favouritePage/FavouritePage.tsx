@@ -50,15 +50,10 @@ const FavouritePage = () => {
     if (String(searchParams).length === 0) {
       setSearchParams(defaultParamsFavourite);
     } else {
-      getFavorites()
+      getFavorites(searchParams)
         .then((res) => {
-          searchProducts(
-            res,
-            searchParams,
-            PageSizeFavourites,
-            setPageCount,
-            setCards
-          );
+          setPageCount(res.pageCount || 1);
+          setCards(res.products || []);
         })
         .catch((error) => {
           console.log(error);

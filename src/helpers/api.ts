@@ -10,7 +10,8 @@ export const postLoginAPI = () => API_BASE_URL + "/login";
 export const getProfileAPI = () => API_BASE_URL + "/profile";
 export const getRefreshTokenAPI = () => API_BASE_URL + "/refresh";
 export const postLogoutAPI = () => API_BASE_URL + "/logout";
-export const getFavoritesAPI = () => API_BASE_URL + "/favourites";
+export const getFavoritesAPI = (data: object) =>
+  API_BASE_URL + "/favourites" + urlQueryParts(data);
 
 // PRODUCTS
 export const getProductsAPI = (data: object) => API_URL + urlQueryParts(data);

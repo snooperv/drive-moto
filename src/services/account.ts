@@ -28,6 +28,6 @@ export const postLogout = async (data: object) => {
   return await request(postLogoutAPI(), "POST", data);
 };
 
-export const getFavorites = async () => {
-  return await request(getFavoritesAPI());
+export const getFavorites = async (data: object) => {
+  return await request(getFavoritesAPI(data));
 };

@@ -17,8 +17,6 @@ const FavouritePage = () => {
     });
   }, []);
 
-  console.log(cards);
-
   return (
     <div className={styles.container}>
       <CustomBreadCrumbs />

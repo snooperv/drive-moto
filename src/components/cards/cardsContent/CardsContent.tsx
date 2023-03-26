@@ -8,7 +8,7 @@ import { cardProps } from "./cardProps";
 const CardsContent = (props: {
   cards: cardProps[];
   pageCount: number;
-  removeFavourite?: (idRemove: string) => Promise<unknown>;
+  removeFavourite?: (idRemove: string) => void;
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const PageNumber = Number(searchParams.get("PageNumber")) || 1;

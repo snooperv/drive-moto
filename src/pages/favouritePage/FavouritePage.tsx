@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./favourite.module.scss";
 import CustomBreadCrumbs from "../../components/breadcrumbs/CustomBreadCrumbs";
 import { useGlobal } from "../../store";
@@ -16,53 +16,40 @@ const FavouritePage = () => {
   const [cards, setCards] = useState<cardProps[]>([]);
   const [pageCount, setPageCount] = useState<number>(1);
 
-  const removeFavourite = (idRemove: string) => {
-    return new Promise((resolve) => {
-      const currentPage = Number(searchParams.get("PageNumber"));
-      const newCards = cards.filter((card) => card.id !== idRemove);
+  const updateFavourites = useCallback(() => {
+    getFavorites(searchParams)
+      .then((res) => {
+        setPageCount(res.pageCount || 1);
+        setCards(res.products || []);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [searchParams]);
 
-      if (newCards.length === 0 && currentPage > 1) {
-        const newQuery = controlQueries(
-          [...searchParams],
-          "PageNumber",
-          String(currentPage - 1)
-        );
-        resolve(newQuery);
-      } else {
-        const newQuery = controlQueries(
-          [...searchParams],
-          "PageNumber",
-          String(pageCount)
-        );
-        getFavorites(new URLSearchParams(newQuery))
-          .then((res) => {
-            if (res.products.length > 0 && pageCount !== currentPage)
-              newCards.push(res.products[0]);
-            if (res.products.length === 1) setPageCount(res.pageCount - 1 || 1);
-            setCards(newCards);
-            resolve(false);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    });
+  const removeFavourite = (idRemove: string) => {
+    const currentPage = Number(searchParams.get("PageNumber"));
+    const newCards = cards.filter((card) => card.id !== idRemove);
+
+    if (newCards.length === 0 && currentPage > 1) {
+      const newQuery = controlQueries(
+        [...searchParams],
+        "PageNumber",
+        String(currentPage - 1)
+      );
+      setSearchParams(newQuery);
+    } else {
+      updateFavourites();
+    }
   };
 
   useEffect(() => {
     if (String(searchParams).length === 0) {
       setSearchParams(defaultParamsFavourite);
     } else {
-      getFavorites(searchParams)
-        .then((res) => {
-          setPageCount(res.pageCount || 1);
-          setCards(res.products || []);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      updateFavourites();
     }
-  }, [searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams, updateFavourites]);
 
   return (
     <div className={styles.container}>

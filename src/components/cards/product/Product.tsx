@@ -6,7 +6,6 @@ import parsePrice from "../../../helpers/parsePrice";
 import { useGlobal } from "../../../store";
 import { removeFavorite, setFavorite } from "../../../services/products";
 import FavoriteIconFilled from "./FavouriteIcon/FavoriteIconFilled";
-import { useSearchParams } from "react-router-dom";
 
 const Product = (props: {
   id: string;
@@ -16,11 +15,10 @@ const Product = (props: {
   isInInventory: boolean;
   img: string;
   isFavourite: boolean;
-  removeFavourite?: (idRemove: string) => Promise<unknown>;
+  removeFavourite?: (idRemove: string) => void;
 }) => {
   const [globalState] = useGlobal();
   const [isFavourite, setIsFavourite] = useState(props.isFavourite);
-  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setIsFavourite(props.isFavourite);
@@ -33,24 +31,14 @@ const Product = (props: {
     setIsFavourite(true);
   };
 
-  const removeRequest = (id: string, res?: any) => {
+  const removeFavourite = (id: string) => {
     void removeFavorite(id)
       .then(() => {
-        if (res) setSearchParams(res);
+        props.removeFavourite && props.removeFavourite(id);
       })
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const removeFavourite = (id: string) => {
-    if (props.removeFavourite) {
-      props.removeFavourite(id).then((res) => {
-        removeRequest(id, res);
-      });
-    } else {
-      removeRequest(id);
-    }
     setIsFavourite(false);
   };
 

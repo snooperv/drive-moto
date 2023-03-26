@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./jetSki.module.scss";
 import Promo from "../../components/jetSki/promo/Promo";
 import Banner from "../../components/jetSki/banner/Banner";
-import CustomBreadCrumbs from "../../components/jetSki/breadcrumbs/CustomBreadCrumbs";
+import CustomBreadCrumbs from "../../components/breadcrumbs/CustomBreadCrumbs";
 import SearchName from "../../components/jetSki/searchName/SearchName";
 import PageTitle from "../../components/jetSki/pageTitle/PageTitle";
 import Filters from "../../components/jetSki/filters/Filters";
@@ -15,7 +15,6 @@ import CardsContent from "../../components/cards/cardsContent/CardsContent";
 
 const JetSkiPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const PageNumber = Number(searchParams.get("PageNumber")) || 1;
   const [cards, setCards] = useState<cardProps[]>([]);
   const [pageCount, setPageCount] = useState<number>(1);
 
@@ -24,10 +23,10 @@ const JetSkiPage = () => {
   useEffect(() => {
     if (String(searchParams).length === 0)
       setSearchParams({
-        PageNumber: String(PageNumber),
+        PageNumber: "1",
         PageSize: String(PageSize),
       });
-  }, [PageNumber, searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     if (!globalState.updateDependencies) {

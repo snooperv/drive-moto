@@ -20,12 +20,16 @@ const Product = (props: {
   const [isFavourite, setIsFavourite] = useState(props.isFavourite);
 
   const setFavourite = (id: string) => {
-    void setFavorite(id);
+    void setFavorite(id).catch((error) => {
+      console.log(error);
+    });
     setIsFavourite(true);
   };
 
   const removeFavourite = (id: string) => {
-    void removeFavorite(id);
+    void removeFavorite(id).catch((error) => {
+      console.log(error);
+    });
     setIsFavourite(false);
   };
 

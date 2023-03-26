@@ -12,9 +12,13 @@ const FavouritePage = () => {
   const [cards, setCards] = useState<cardProps[]>([]);
 
   useEffect(() => {
-    getFavorites().then((res) => {
-      setCards(res || []);
-    });
+    getFavorites()
+      .then((res) => {
+        setCards(res || []);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   return (

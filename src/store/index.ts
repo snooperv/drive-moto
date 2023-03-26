@@ -67,4 +67,14 @@ export const actions = {
     localStorage.setItem("cart", JSON.stringify(newCart));
     store.setState({ cart: newCart });
   },
+  removeCartAll: (newValue: cardProps) => {
+    let newCart = store.state.cart;
+    const cart = newCart.filter((item) => item.id === newValue.id)[0];
+    if (cart.count) {
+      actions.setCardCounts(store.state.cartCounts - cart.count);
+    }
+    newCart = newCart.filter((item) => item.id !== newValue.id);
+    localStorage.setItem("cart", JSON.stringify(newCart));
+    store.setState({ cart: newCart });
+  },
 };

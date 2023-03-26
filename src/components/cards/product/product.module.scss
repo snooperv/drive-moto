@@ -122,6 +122,11 @@
     justify-content: space-between;
   }
 
+  &__removeButtons {
+    display: flex;
+    gap: 5px;
+  }
+
   &__remove {
     background: #1c62cd;
     color: #fff;

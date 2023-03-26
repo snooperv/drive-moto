@@ -84,11 +84,19 @@ const Product = (props: {
                     (item) => item.id === props.product.id
                   )[0].count
                 }
-                <div
-                  className={styles.card__remove}
-                  onClick={() => actions.removeCart(props.product)}
-                >
-                  Удалить
+                <div className={styles.card__removeButtons}>
+                  <div
+                    className={styles.card__remove}
+                    onClick={() => actions.removeCart(props.product)}
+                  >
+                    Удалить
+                  </div>
+                  <div
+                    className={styles.card__remove}
+                    onClick={() => actions.removeCartAll(props.product)}
+                  >
+                    Удалить все
+                  </div>
                 </div>
               </div>
             ) : (

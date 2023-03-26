@@ -28,34 +28,6 @@ const Banner = () => {
     },
   ];
 
-  const settings = {
-    autoPlay: false,
-    indicators: true,
-    duration: 500,
-    navButtonsAlwaysVisible: true,
-    navButtonsAlwaysInvisible: false,
-    cycleNavigation: true,
-    fullHeightHover: true,
-    swipe: true,
-    height: "400px",
-    animation: "slide" as "slide",
-    indicatorContainerProps: {
-      className: styles.indicatorContainer,
-    },
-    IndicatorIcon: <PanoramaFishEyeIcon />,
-    indicatorIconButtonProps: {
-      className: styles.indicatorIcon,
-    },
-    activeIndicatorIconButtonProps: {
-      className: styles.activeIndicatorIcon,
-    },
-    NextIcon: <ArrowForwardIosIcon />,
-    PrevIcon: <ArrowBackIosIcon />,
-    navButtonsProps: {
-      className: styles.navButtons,
-    },
-  };
-
   return (
     <Carousel {...settings} className={styles.slider}>
       {items.map((item, i) => (
@@ -63,6 +35,34 @@ const Banner = () => {
       ))}
     </Carousel>
   );
+};
+
+const settings = {
+  autoPlay: false,
+  indicators: true,
+  duration: 500,
+  navButtonsAlwaysVisible: true,
+  navButtonsAlwaysInvisible: false,
+  cycleNavigation: true,
+  fullHeightHover: true,
+  swipe: true,
+  height: "400px",
+  animation: "slide" as "slide",
+  indicatorContainerProps: {
+    className: styles.indicatorContainer,
+  },
+  IndicatorIcon: <PanoramaFishEyeIcon />,
+  indicatorIconButtonProps: {
+    className: styles.indicatorIcon,
+  },
+  activeIndicatorIconButtonProps: {
+    className: styles.activeIndicatorIcon,
+  },
+  NextIcon: <ArrowForwardIosIcon />,
+  PrevIcon: <ArrowBackIosIcon />,
+  navButtonsProps: {
+    className: styles.navButtons,
+  },
 };
 
 function Item(props: { item: { img: string } }) {

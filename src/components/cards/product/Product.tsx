@@ -19,6 +19,15 @@ const Product = (props: {
   const [globalState] = useGlobal();
   const [isFavourite, setIsFavourite] = useState(props.product.isFavourite);
   const [isAddCart, setAddCart] = useState(false);
+  const [countInCart, setCountInCart] = useState(0);
+
+  useEffect(() => {
+    if (currentPath === "/cart")
+      setCountInCart(
+        globalState.cart.filter((item) => item.id === props.product.id)[0]
+          ?.count || 0
+      );
+  }, [currentPath, globalState, props.product.id]);
 
   useEffect(() => {
     setIsFavourite(props.product.isFavourite);
@@ -76,14 +85,9 @@ const Product = (props: {
             <div className={styles.card__price}>
               {parsePrice(props.product.price)} ₽
             </div>
-            {currentPath === "/cart" ? (
+            {currentPath === "/cart" && countInCart > 0 ? (
               <div className={styles.card__removeFooter}>
-                x
-                {
-                  globalState.cart.filter(
-                    (item) => item.id === props.product.id
-                  )[0].count
-                }
+                x{countInCart}
                 <div className={styles.card__removeButtons}>
                   <div
                     className={styles.card__remove}

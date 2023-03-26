@@ -4,6 +4,7 @@ import Header from "../../components/header/Header";
 import "./layout.scss";
 import { BrowserRouter } from "react-router-dom";
 import Footer from "../../components/footer/Footer";
+import OftenBuy from "../../components/oftenBuy/OftenBuy";
 
 const Layout = () => {
   return (
@@ -11,6 +12,7 @@ const Layout = () => {
       <Header />
       <main className="main_container">
         <MainRoutes />
+        <OftenBuy />
       </main>
       <Footer />
     </BrowserRouter>

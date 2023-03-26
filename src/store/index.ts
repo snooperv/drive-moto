@@ -18,7 +18,7 @@ const initialState: IAppState = {
     localStorage.getItem("token") !== null ? localStorage.getItem("token") : "",
   username: "",
   cart: JSON.parse(localStorage.getItem("cart") || "[]"),
-  cartCounts: Number(localStorage.getItem("cartCounts")),
+  cartCounts: Number(localStorage.getItem("cartCounts")) || 0,
 };
 
 export const { useGlobal, store } = createStore(React, initialState, {

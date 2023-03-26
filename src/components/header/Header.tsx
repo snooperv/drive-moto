@@ -6,7 +6,7 @@ import location from "../../assets/img/header/location.svg";
 import cart from "../../assets/img/header/cart.svg";
 import AuthModal from "../modals/AuthModal";
 import Avatar from "./Avatar";
-import { useGlobal } from "../../store";
+import { actions, useGlobal } from "../../store";
 import { getProfile } from "../../services/account";
 
 const Header = () => {
@@ -20,7 +20,6 @@ const Header = () => {
       : styles.userInfo__name;
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
-  const [username, setUsername] = React.useState("");
   const [globalState] = useGlobal();
 
   const handleOpen = () => setOpenLogin(true);
@@ -29,7 +28,7 @@ const Header = () => {
     if (globalState.token) {
       getProfile()
         .then((res) => {
-          setUsername(res.username);
+          actions.setUsername(res.username);
         })
         .catch((error) => {
           console.log(error);
@@ -62,7 +61,7 @@ const Header = () => {
                 className={({ isActive }) => favouriteIsActive(isActive)}
               >
                 <Avatar />
-                <span>{username}</span>
+                <span>{globalState.username}</span>
               </NavLink>
             ) : (
               <div className={styles.userInfo__name} onClick={handleOpen}>

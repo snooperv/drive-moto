@@ -1,0 +1,22 @@
+@use "sass:math";
+@import "../../assets/variables/variables";
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &__username {
+    font-weight: 700;
+    font-size: math.div(30em, $font-size);
+  }
+
+  &__text {
+    font-size: math.div(30em, $font-size);
+  }
+}
+
+.content {
+  margin-top: 50px;
+  margin-bottom: 80px;
+}

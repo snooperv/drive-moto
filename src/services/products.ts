@@ -15,9 +15,9 @@ export const getFilters = async () => {
 };
 
 export const setFavorite = async (id: string) => {
-  return await request(setFavoriteAPI(id));
+  return await request(setFavoriteAPI(id), "PUT");
 };
 
 export const removeFavorite = async (id: string) => {
-  return await request(removeFavoriteAPI(id));
+  return await request(removeFavoriteAPI(id), "PUT");
 };

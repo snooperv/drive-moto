@@ -31,8 +31,8 @@ const JetSkiPage = () => {
   useEffect(() => {
     if (!globalState.updateDependencies) {
       getProducts(searchParams).then((res) => {
-        setPageCount(res.pageCount);
-        setCards(res.products);
+        setPageCount(res.pageCount || 1);
+        setCards(res.products || []);
       });
     }
   }, [globalState.updateDependencies, searchParams]);

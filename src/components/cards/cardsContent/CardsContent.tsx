@@ -23,11 +23,13 @@ const CardsContent = (props: { cards: cardProps[]; pageCount: number }) => {
         {props.cards.length > 0 ? (
           props.cards.map((card, index) => (
             <Product
+              id={card.id}
               title={card.title}
               price={card.price}
               img={card.img}
               isSale={card.actions.includes(0)}
               isInInventory={card.isInInventory}
+              isFavourite={card.isFavourite}
               key={index}
             />
           ))
@@ -37,7 +39,7 @@ const CardsContent = (props: { cards: cardProps[]; pageCount: number }) => {
           </div>
         )}
       </div>
-      {props.cards.length !== 0 && (
+      {props.pageCount !== 1 && (
         <Stack sx={{ alignItems: "center", margin: "40px 0" }}>
           <Pagination
             count={props.pageCount}

@@ -5,6 +5,7 @@ interface IAppState {
   updateDependencies: boolean;
   dataLoaded: boolean;
   token: string | null;
+  username: string;
 }
 
 const initialState: IAppState = {
@@ -12,6 +13,7 @@ const initialState: IAppState = {
   dataLoaded: false,
   token:
     localStorage.getItem("token") !== null ? localStorage.getItem("token") : "",
+  username: "",
 };
 
 export const { useGlobal, store } = createStore(React, initialState, {
@@ -27,5 +29,8 @@ export const actions = {
   },
   setToken: (newValue: string) => {
     store.setState({ token: newValue });
+  },
+  setUsername: (newValue: string) => {
+    store.setState({ username: newValue });
   },
 };

@@ -18,6 +18,7 @@ const Product = (props: {
   const currentPath = location.pathname;
   const [globalState] = useGlobal();
   const [isFavourite, setIsFavourite] = useState(props.product.isFavourite);
+  const [isAddCart, setAddCart] = useState(false);
 
   useEffect(() => {
     setIsFavourite(props.product.isFavourite);
@@ -39,6 +40,14 @@ const Product = (props: {
         console.log(error);
       });
     setIsFavourite(false);
+  };
+
+  const addCart = () => {
+    setAddCart(true);
+    actions.addCart(props.product);
+    setTimeout(() => {
+      setAddCart(false);
+    }, 500);
   };
 
   return (
@@ -83,11 +92,19 @@ const Product = (props: {
                 </div>
               </div>
             ) : (
-              <div
-                className={styles.card__buy}
-                onClick={() => actions.addCart(props.product)}
-              >
-                <img src={buyIcon} alt="Купить" />
+              <div className={styles.card__addFooter}>
+                <span
+                  className={
+                    isAddCart
+                      ? `${styles.card__addText} ${styles.card__addActive}`
+                      : styles.card__addText
+                  }
+                >
+                  + Добавлено
+                </span>
+                <div className={styles.card__buy} onClick={addCart}>
+                  <img src={buyIcon} alt="Купить" />
+                </div>
               </div>
             )}
           </div>

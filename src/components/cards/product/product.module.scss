@@ -87,8 +87,24 @@
     color: #2f3035;
   }
 
+  &__addFooter {
+    font-size: math.div(14em, $font-size);
+    color: #1c62cd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__addText {
+    opacity: 0;
+    transition: all 0.5s ease;
+  }
+
+  &__addActive {
+    opacity: 1;
+  }
+
   &__buy {
-    align-self: flex-end;
     height: 40px;
     cursor: pointer;
 

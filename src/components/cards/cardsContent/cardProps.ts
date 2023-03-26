@@ -10,4 +10,5 @@ export interface cardProps {
   isFavourite: boolean;
   isOnRequest: boolean;
   modelId: string;
+  count?: number;
 }

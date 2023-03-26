@@ -99,6 +99,21 @@
     }
   }
 
+  &__removeFooter {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__remove {
+    background: #1c62cd;
+    color: #fff;
+    font-size: math.div(16em, $font-size);
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
   &__notAvailable {
     align-self: center;
     font-weight: 700;

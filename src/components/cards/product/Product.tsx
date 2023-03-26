@@ -3,26 +3,25 @@ import styles from "./product.module.scss";
 import FavoriteIcon from "./FavouriteIcon/FavoriteIcon";
 import buyIcon from "../../../assets/img/main/buy.svg";
 import parsePrice from "../../../helpers/parsePrice";
-import { useGlobal } from "../../../store";
+import { actions, useGlobal } from "../../../store";
 import { removeFavorite, setFavorite } from "../../../services/products";
 import FavoriteIconFilled from "./FavouriteIcon/FavoriteIconFilled";
+import { cardProps } from "../cardsContent/cardProps";
+import { useLocation } from "react-router";
 
 const Product = (props: {
-  id: string;
-  title: string;
-  price: number;
+  product: cardProps;
   isSale: boolean;
-  isInInventory: boolean;
-  img: string;
-  isFavourite: boolean;
   removeFavourite?: (idRemove: string) => void;
 }) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
   const [globalState] = useGlobal();
-  const [isFavourite, setIsFavourite] = useState(props.isFavourite);
+  const [isFavourite, setIsFavourite] = useState(props.product.isFavourite);
 
   useEffect(() => {
-    setIsFavourite(props.isFavourite);
-  }, [props.id, props.isFavourite]);
+    setIsFavourite(props.product.isFavourite);
+  }, [props.product.id, props.product.isFavourite]);
 
   const setFavourite = (id: string) => {
     void setFavorite(id).catch((error) => {
@@ -44,36 +43,55 @@ const Product = (props: {
 
   return (
     <div className={styles.card}>
-      {props.isSale && <span className={styles.sale}>SALE</span>}
+      {props.product && <span className={styles.sale}>SALE</span>}
       <div className={styles.card__favorite}>
         {globalState.token &&
           (isFavourite ? (
             <FavoriteIconFilled
               onClick={() => {
-                removeFavourite(props.id);
+                removeFavourite(props.product.id);
               }}
             />
           ) : (
-            <FavoriteIcon onClick={() => setFavourite(props.id)} />
+            <FavoriteIcon onClick={() => setFavourite(props.product.id)} />
           ))}
       </div>
       <div className={styles.card__image}>
         <div className={styles.card__hover}>посмотреть товар</div>
-        <img src={props.img} alt="Фото товара" />
+        <img src={props.product.img} alt="Фото товара" />
       </div>
       <div className={styles.card__description}>
-        <div className={styles.card__title}>{props.title}</div>
-        {props.isInInventory && (
+        <div className={styles.card__title}>{props.product.title}</div>
+        {props.product.isInInventory ? (
           <div className={styles.card__footer}>
             <div className={styles.card__price}>
-              {parsePrice(props.price)} ₽
+              {parsePrice(props.product.price)} ₽
             </div>
-            <div className={styles.card__buy}>
-              <img src={buyIcon} alt="Купить" />
-            </div>
+            {currentPath === "/cart" ? (
+              <div className={styles.card__removeFooter}>
+                x
+                {
+                  globalState.cart.filter(
+                    (item) => item.id === props.product.id
+                  )[0].count
+                }
+                <div
+                  className={styles.card__remove}
+                  onClick={() => actions.removeCart(props.product)}
+                >
+                  Удалить
+                </div>
+              </div>
+            ) : (
+              <div
+                className={styles.card__buy}
+                onClick={() => actions.addCart(props.product)}
+              >
+                <img src={buyIcon} alt="Купить" />
+              </div>
+            )}
           </div>
-        )}
-        {!props.isInInventory && (
+        ) : (
           <div className={styles.card__footer}>
             <div className={styles.card__notAvailable}>нет в наличии</div>
             <div className={styles.card__report}>Сообщить о поступлении</div>

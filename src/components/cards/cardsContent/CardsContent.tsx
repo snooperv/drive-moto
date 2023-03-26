@@ -27,15 +27,10 @@ const CardsContent = (props: {
         {props.cards.length > 0 ? (
           props.cards.map((card, index) => (
             <Product
-              id={card.id}
-              title={card.title}
-              price={card.price}
-              img={card.img}
+              product={card}
               isSale={card.actions.includes(0)}
-              isInInventory={card.isInInventory}
-              isFavourite={card.isFavourite}
-              key={index}
               removeFavourite={props.removeFavourite}
+              key={index}
             />
           ))
         ) : (

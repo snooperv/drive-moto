@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router";
 import JetSkiPage from "../pages/jetSkiPage/JetSkiPage";
 import NotFound from "../pages/notFound/NotFound";
 import FavouritePage from "../pages/favouritePage/FavouritePage";
+import CartPage from "../pages/cartPage/cartPage";
 
 const MainRoutes = () => {
   return (
@@ -11,6 +12,7 @@ const MainRoutes = () => {
       {/* ВАЖНО! Когда появится главная страница, изменить строку ниже */}
       <Route path="/" element={<Navigate to="/jet-skis" />} />
       <Route path="/favourite" element={<FavouritePage />} />
+      <Route path="/cart" element={<CartPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

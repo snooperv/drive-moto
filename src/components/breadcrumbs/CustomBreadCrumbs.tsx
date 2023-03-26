@@ -9,6 +9,7 @@ import { Link as RouterLink } from "react-router-dom";
 const breadcrumbNameMap: { [key: string]: string } = {
   "/jet-skis": "Гидроциклы",
   "/favourite": "Личный кабинет",
+  "/cart": "Корзина",
 };
 
 interface LinkRouterProps extends LinkProps {

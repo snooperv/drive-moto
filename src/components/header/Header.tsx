@@ -8,6 +8,7 @@ import AuthModal from "../modals/AuthModal";
 import Avatar from "./Avatar";
 import { actions, useGlobal } from "../../store";
 import { getProfile } from "../../services/account";
+import { Badge } from "@mui/material";
 
 const Header = () => {
   const pageIsActive = (isActive: boolean) =>
@@ -71,7 +72,17 @@ const Header = () => {
             )}
 
             <div className={styles.userInfo__cart}>
-              <img src={cart} alt="Корзина" />
+              <Link to="/cart">
+                <Badge
+                  badgeContent={globalState.cartCounts}
+                  color="primary"
+                  sx={{
+                    ".MuiBadge-badge": { transform: "translate(50%, 50%)" },
+                  }}
+                >
+                  <img src={cart} alt="Корзина" />
+                </Badge>
+              </Link>
             </div>
           </div>
         </div>

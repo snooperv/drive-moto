@@ -17,11 +17,11 @@ const Product = (props: {
   isFavourite: boolean;
 }) => {
   const [globalState] = useGlobal();
-  const [isFavourite, setIsFavourite] = useState(false);
+  const [isFavourite, setIsFavourite] = useState(props.isFavourite);
 
   useEffect(() => {
     setIsFavourite(props.isFavourite);
-  }, [props.isFavourite]);
+  }, [props.id, props.isFavourite]);
 
   const setFavourite = (id: string) => {
     void setFavorite(id).catch((error) => {

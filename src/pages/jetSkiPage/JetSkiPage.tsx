@@ -6,11 +6,11 @@ import CustomBreadCrumbs from "../../components/breadcrumbs/CustomBreadCrumbs";
 import SearchName from "../../components/jetSki/searchName/SearchName";
 import PageTitle from "../../components/jetSki/pageTitle/PageTitle";
 import Filters from "../../components/jetSki/filters/Filters";
+import CardsContent from "../../components/cards/cardsContent/CardsContent";
 import { getProducts } from "../../services/products";
 import { cardProps } from "../../components/cards/cardsContent/cardProps";
 import { useSearchParams } from "react-router-dom";
 import { useGlobal } from "../../store";
-import CardsContent from "../../components/cards/cardsContent/CardsContent";
 import { controlQueries } from "../../helpers/controlQueries";
 import { searchProducts } from "../../helpers/seacrhProducts";
 import { defaultSearchParams } from "../../constants/defaultSearchParams";
@@ -37,7 +37,6 @@ const JetSkiPage = () => {
 
       getProducts(query)
         .then((res) => {
-          console.log(search);
           if (search) {
             searchProducts(
               res.products,

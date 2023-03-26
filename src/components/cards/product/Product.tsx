@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./product.module.scss";
 import FavoriteIcon from "./FavouriteIcon/FavoriteIcon";
 import buyIcon from "../../../assets/img/main/buy.svg";
@@ -17,7 +17,11 @@ const Product = (props: {
   isFavourite: boolean;
 }) => {
   const [globalState] = useGlobal();
-  const [isFavourite, setIsFavourite] = useState(props.isFavourite);
+  const [isFavourite, setIsFavourite] = useState(false);
+
+  useEffect(() => {
+    setIsFavourite(props.isFavourite);
+  }, [props.isFavourite]);
 
   const setFavourite = (id: string) => {
     void setFavorite(id).catch((error) => {

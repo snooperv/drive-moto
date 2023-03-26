@@ -25,7 +25,5 @@ export const searchProducts = (
   const start = (pageNumber - 1) * pageSize;
   const end = pageNumber * pageSize;
 
-  // console.log(start, end);
-
   setCards(filterCards.slice(start, end));
 };

@@ -11,8 +11,7 @@ import { getProducts } from "../../services/products";
 import { cardProps } from "../../components/cards/cardsContent/cardProps";
 import { useSearchParams } from "react-router-dom";
 import { useGlobal } from "../../store";
-import { controlQueries } from "../../helpers/controlQueries";
-import { searchProducts } from "../../helpers/seacrhProducts";
+import { changeQuery, searchProducts } from "../../helpers/seacrhProducts";
 import { defaultSearchParams } from "../../constants/defaultSearchParams";
 import { PageSize } from "../../constants/pageSetting";
 
@@ -27,17 +26,11 @@ const JetSkiPage = () => {
     if (String(searchParams).length === 0) {
       setSearchParams(defaultSearchParams);
     } else if (!globalState.updateDependencies) {
-      const search = searchParams.get("search");
-      let query = searchParams;
-      if (search && search !== "") {
-        const newQuery = controlQueries([...query]);
-        newQuery.push(["PageSize", "100"]);
-        query = new URLSearchParams(newQuery);
-      }
+      const query = changeQuery(searchParams);
 
       getProducts(query)
         .then((res) => {
-          if (search) {
+          if (query.get("search")) {
             searchProducts(
               res.products,
               searchParams,

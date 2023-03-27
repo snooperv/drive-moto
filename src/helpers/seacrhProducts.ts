@@ -1,5 +1,6 @@
 import { cardProps } from "../components/cards/cardsContent/cardProps";
 import { Dispatch, SetStateAction } from "react";
+import { controlQueries } from "./controlQueries";
 
 export const searchProducts = (
   products: any,
@@ -32,4 +33,15 @@ export const changePageCount = (filterCards: cardProps[], pageSize: number) => {
   return filterCards.length > pageSize
     ? Math.ceil(filterCards.length / pageSize)
     : 1;
+};
+
+export const changeQuery = (searchParams: URLSearchParams) => {
+  const search = searchParams.get("search");
+  let query = searchParams;
+  if (search && search !== "") {
+    const newQuery = controlQueries([...query]);
+    newQuery.push(["PageSize", "100"]);
+    query = new URLSearchParams(newQuery);
+  }
+  return query;
 };

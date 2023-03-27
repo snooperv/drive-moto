@@ -9,6 +9,8 @@ import CardsContent from "../../components/cards/cardsContent/CardsContent";
 import { useSearchParams } from "react-router-dom";
 import { defaultParamsFavourite } from "../../constants/defaultSearchParams";
 import { controlQueries } from "../../helpers/controlQueries";
+import { searchProducts } from "../../helpers/seacrhProducts";
+import { PageSizeFavourites } from "../../constants/pageSetting";
 
 const FavouritePage = () => {
   const [globalState] = useGlobal();
@@ -17,10 +19,28 @@ const FavouritePage = () => {
   const [pageCount, setPageCount] = useState<number>(1);
 
   const updateFavourites = useCallback(() => {
-    getFavorites(searchParams)
+    const search = searchParams.get("search");
+    let query = searchParams;
+    if (search && search !== "") {
+      const newQuery = controlQueries([...query]);
+      newQuery.push(["PageSize", "100"]);
+      query = new URLSearchParams(newQuery);
+    }
+
+    getFavorites(query)
       .then((res) => {
-        setPageCount(res.pageCount || 1);
-        setCards(res.products || []);
+        if (search) {
+          searchProducts(
+            res.products,
+            searchParams,
+            PageSizeFavourites,
+            setPageCount,
+            setCards
+          );
+        } else {
+          setPageCount(res.pageCount || 1);
+          setCards(res.products || []);
+        }
       })
       .catch((error) => {
         console.log(error);
